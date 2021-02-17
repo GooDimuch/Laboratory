@@ -1,0 +1,2 @@
+call msiexec /x "components\TortoiseSVN.msi" /passive /le "%~dp0install_SVN.log"
+call msiexec /i "%packagesDir%TortoiseSVN.msi" /passive /le "%~dp0install_SVN.log" INSTALLDIR="%svnDestinationDir%" ADDLOCAL=ALL
