@@ -150,7 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724df941bd1ed454f9bcae8f42efe12c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1443357971}
   enemyPrefab: {fileID: 11400000, guid: 652ab1f901384324dbafe0676ee9d9a1, type: 2}
+  _enemyOfNumber: 1
 --- !u!4 &684666298
 Transform:
   m_ObjectHideFlags: 0
