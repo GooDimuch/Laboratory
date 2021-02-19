@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.leopotam.ecs": "https://github.com/Leopotam/ecs.git",
+    "com.leopotam.ecs-unityintegration": "https://github.com/Leopotam/ecs-unityintegration.git",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ide.rider": "1.1.4",
     "com.unity.ide.vscode": "1.2.0",
@@ -38,5 +40,15 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
+  },
+  "lock": {
+    "com.leopotam.ecs": {
+      "revision": "HEAD",
+      "hash": "acd5873e57796ab5bfbe6c11c06fb044b912c6f9"
+    },
+    "com.leopotam.ecs-unityintegration": {
+      "revision": "HEAD",
+      "hash": "127d6a8f02ec987ac724a7fc671b1d5d00b0ea56"
+    }
   }
 }
