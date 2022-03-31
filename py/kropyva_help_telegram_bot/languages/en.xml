@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="English" short_name="en">
+    <constants>
+        <constant key="SELECT_MENU_ITEM">Select menu item</constant>
+        <constant key="SELECT_LANGUAGE">Select language</constant>
+        <constant key="BACK">Back</constant>
+    </constants>
+    <item_names>
+        <item_name key="back">Back</item_name>
+        <item_name key="in_development">Menu in development</item_name>
+        <item_name key="settings">Settings</item_name>
+        <item_name key="activation_failed">Activation failed</item_name>
+        <item_name key="question_by_functional">Question by functional</item_name>
+        <item_name key="find_bug">Find bug</item_name>
+        <item_name key="another_question">Another question</item_name>
+    </item_names>
+</language>

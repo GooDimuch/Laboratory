@@ -1,0 +1,73 @@
+{
+  "text": "SELECT_MENU_ITEM",
+  "name": "",
+  "items": [
+    {
+      "text": "SELECT_MENU_ITEM",
+      "name": "activation_failed",
+      "items": [
+        {
+          "text": "SELECT_MENU_ITEM",
+          "name": "back",
+          "items": []
+        },
+        {
+          "text": "answer_1",
+          "name": "Question_1",
+          "items": []
+        },
+        {
+          "text": "answer_2",
+          "name": "Question_2",
+          "items": []
+        },
+        {
+          "text": "answer_3",
+          "name": "Question_3",
+          "items": []
+        }
+      ]
+    },
+    {
+      "text": "SELECT_MENU_ITEM",
+      "name": "question_by_functional",
+      "items": [
+        {
+          "text": "SELECT_MENU_ITEM",
+          "name": "back",
+          "items": []
+        },
+        {
+          "text": "answer_4",
+          "name": "Question_4",
+          "items": []
+        },
+        {
+          "text": "answer_5",
+          "name": "Question_5",
+          "items": []
+        },
+        {
+          "text": "answer_6",
+          "name": "Question_6",
+          "items": []
+        },
+        {
+          "text": "answer_7",
+          "name": "Question_7",
+          "items": []
+        }
+      ]
+    },
+    {
+      "text": "in_development",
+      "name": "find_bug",
+      "items": []
+    },
+    {
+      "text": "in_development",
+      "name": "another_question",
+      "items": []
+    }
+  ]
+}
