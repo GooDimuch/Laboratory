@@ -25,13 +25,14 @@ namespace Hero {
 				movementVector = _camera.transform.TransformDirection(_inputService.Axis);
 				movementVector.y = 0;
 				movementVector.Normalize();
+				movementVector *= _movementSpeed;
 
 				transform.forward = movementVector;
 			}
 
 			movementVector += Physics.gravity;
 
-			_characterController.Move(_movementSpeed * movementVector * Time.deltaTime);
+			_characterController.Move(movementVector * Time.deltaTime);
 		}
 	}
 }

@@ -1472,6 +1472,7 @@ GameObject:
   - component: {fileID: 7810309645388156946}
   - component: {fileID: 2167450469528898461}
   - component: {fileID: 397456520996159034}
+  - component: {fileID: 1121377627188056682}
   m_Layer: 0
   m_Name: Raptor
   m_TagString: Untagged
@@ -1508,7 +1509,7 @@ Animator:
   m_GameObject: {fileID: 2252404732736063764}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 923da24417bde954e8eb93a36c143958, type: 3}
-  m_Controller: {fileID: 9100000, guid: c3c8b7c295f36b747972961f8b6a24cd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 78041f8a1a8e5c3478bc491f76d4cfb3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1685,6 +1686,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 2167450469528898461}
   _movementSpeed: 3
+--- !u!114 &1121377627188056682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2252404732736063764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0b4024fa63c4039b3ed513573f9f84e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterController: {fileID: 2167450469528898461}
+  _animator: {fileID: 5157602556496975485}
 --- !u!1 &2364230345372000999
 GameObject:
   m_ObjectHideFlags: 0

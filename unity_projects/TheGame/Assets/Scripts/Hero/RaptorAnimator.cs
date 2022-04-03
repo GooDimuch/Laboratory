@@ -3,7 +3,7 @@ using Logic;
 using UnityEngine;
 
 namespace Hero {
-	public class HeroAnimator : MonoBehaviour, IAnimationStateReader {
+	public class RaptorAnimator : MonoBehaviour, IAnimationStateReader {
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] public Animator _animator;
 
