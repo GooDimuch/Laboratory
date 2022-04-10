@@ -2,6 +2,7 @@
 /*     https://infinity-code.com    */
 
 using System.Collections.Generic;
+using MeshToTerrainConvertor.Scripts;
 using UnityEngine;
 
 namespace InfinityCode.MeshToTerrain

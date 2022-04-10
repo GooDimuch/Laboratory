@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace InfinityCode.MeshToTerrain
+namespace MeshToTerrainConvertor.Scripts
 {
     public class MeshToTerrainDocumentation : ScriptableObject
     {

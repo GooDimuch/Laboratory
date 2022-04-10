@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace InfinityCode.MeshToTerrain
+namespace MeshToTerrainConvertor.Example.Scripts
 {
     public class MeshToTerrainReadMe : MonoBehaviour
     {

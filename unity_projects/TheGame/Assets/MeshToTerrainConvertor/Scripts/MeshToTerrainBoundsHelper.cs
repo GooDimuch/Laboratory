@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace InfinityCode.MeshToTerrain
+namespace MeshToTerrainConvertor.Scripts
 {
     public class MeshToTerrainBoundsHelper : MonoBehaviour
     {
