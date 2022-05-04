@@ -1,76 +1,66 @@
 using System.Collections;
 using UnityEngine;
 
-namespace CodeBase.Enemy
-{
-  public class Aggro : MonoBehaviour
-  {
-    public TriggerObserver TriggerObserver;
-    public Follow Follow;
+namespace CodeBase.Enemy {
+	public class Aggro : MonoBehaviour {
+		public TriggerObserver TriggerObserver;
+		public Follow Follow;
 
-    public float Cooldown;
-    private bool _hasAggroTarget;
+		public float Cooldown;
+		private bool _hasAggroTarget;
 
-    private WaitForSeconds _switchFollowOffAfterCooldown;
-    private Coroutine _aggroCoroutine;
+		private WaitForSeconds _switchFollowOffAfterCooldown;
+		private Coroutine _aggroCoroutine;
 
-    private void Start()
-    {
-      _switchFollowOffAfterCooldown = new WaitForSeconds(Cooldown);
-      
-      TriggerObserver.TriggerEnter += TriggerEnter;
-      TriggerObserver.TriggerExit += TriggerExit;
+		private void Start() {
+			_switchFollowOffAfterCooldown = new WaitForSeconds(Cooldown);
 
-      Follow.enabled = false;
-    }
+			TriggerObserver.TriggerEnter += TriggerEnter;
+			TriggerObserver.TriggerExit += TriggerExit;
 
-    private void OnDestroy()
-    {
-      TriggerObserver.TriggerEnter -= TriggerEnter;
-      TriggerObserver.TriggerExit -= TriggerExit;
-    }
+			Follow.enabled = false;
+		}
 
-    private void TriggerEnter(Collider obj)
-    {
-      if(_hasAggroTarget) return;
-      
-      StopAggroCoroutine();
+		private void OnDestroy() {
+			TriggerObserver.TriggerEnter -= TriggerEnter;
+			TriggerObserver.TriggerExit -= TriggerExit;
+		}
 
-      SwitchFollowOn();
-    }
+		private void TriggerEnter(Collider obj) {
+			if (_hasAggroTarget) return;
 
-    private void TriggerExit(Collider obj)
-    {
-      if(!_hasAggroTarget) return;
-      
-      _aggroCoroutine = StartCoroutine(SwitchFollowOffAfterCooldown());
-    }
+			StopAggroCoroutine();
 
-    private void StopAggroCoroutine()
-    {
-      if(_aggroCoroutine == null) return;
-      
-      StopCoroutine(_aggroCoroutine);
-      _aggroCoroutine = null;
-    }
+			SwitchFollowOn();
+		}
 
-    private IEnumerator SwitchFollowOffAfterCooldown()
-    {
-      yield return _switchFollowOffAfterCooldown;
-      
-      SwitchFollowOff();
-    }
+		private void TriggerExit(Collider obj) {
+			if (!_hasAggroTarget) return;
 
-    private void SwitchFollowOn()
-    {
-      _hasAggroTarget = true;
-      Follow.enabled = true;
-    }
+			_aggroCoroutine = StartCoroutine(SwitchFollowOffAfterCooldown());
+		}
 
-    private void SwitchFollowOff()
-    {
-      Follow.enabled = false;
-      _hasAggroTarget = false;
-    }
-  }
+		private void StopAggroCoroutine() {
+			if (_aggroCoroutine == null) return;
+
+			StopCoroutine(_aggroCoroutine);
+			_aggroCoroutine = null;
+		}
+
+		private IEnumerator SwitchFollowOffAfterCooldown() {
+			yield return _switchFollowOffAfterCooldown;
+
+			SwitchFollowOff();
+		}
+
+		private void SwitchFollowOn() {
+			_hasAggroTarget = true;
+			Follow.enabled = true;
+		}
+
+		private void SwitchFollowOff() {
+			Follow.enabled = false;
+			_hasAggroTarget = false;
+		}
+	}
 }
