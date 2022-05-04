@@ -20,7 +20,7 @@ namespace CodeBase.Enemy {
 			if (_gameFactory.HeroGameObject != null)
 				InitializeHeroTransform();
 			else
-				_gameFactory.HeroCreated += HeroCreated;
+				_gameFactory.HeroCreated += InitializeHeroTransform;
 		}
 
 		private void Update() {
@@ -30,20 +30,16 @@ namespace CodeBase.Enemy {
 
 		private void OnDestroy() {
 			if (_gameFactory != null)
-				_gameFactory.HeroCreated -= HeroCreated;
+				_gameFactory.HeroCreated -= InitializeHeroTransform;
 		}
 
 		private bool IsInitialized() =>
 			_heroTransform != null;
 
-		private void HeroCreated() =>
-			InitializeHeroTransform();
-
 		private void InitializeHeroTransform() =>
 			_heroTransform = _gameFactory.HeroGameObject.transform;
 
-		private bool IsHeroNotReached() {
-			return Agent.transform.position.SqrMagnitudeTo(_heroTransform.position) >= MinimalDistance;
-		}
+		private bool IsHeroNotReached() =>
+			Agent.transform.position.SqrMagnitudeTo(_heroTransform.position) >= MinimalDistance;
 	}
 }
