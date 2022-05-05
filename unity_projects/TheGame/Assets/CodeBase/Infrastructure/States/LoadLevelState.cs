@@ -45,10 +45,12 @@ namespace CodeBase.Infrastructure.States {
 		}
 
 		private void InitGameWorld() {
-			_gameFactory.CreateHud();
-			var hero = _gameFactory.CreateHero(GameObject.FindWithTag(INITIAL_POINT_TAG));
+			var hero = InitHero();
+			_gameFactory.CreateHud(hero);
 			CameraFollow(hero);
 		}
+
+		private GameObject InitHero() => _gameFactory.CreateHero(GameObject.FindWithTag(INITIAL_POINT_TAG));
 
 		private void CameraFollow(GameObject hero) =>
 			Camera.main.GetComponent<CameraFollow>().Follow(hero);

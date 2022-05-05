@@ -1,4 +1,5 @@
 using System.Linq;
+using CodeBase.Logic;
 using CodeBase.Services;
 using CodeBase.Services.Factory;
 using CodeBase.Utils;
@@ -44,7 +45,7 @@ namespace CodeBase.Enemy {
 		private void OnAttack() {
 			if (Hit(out Collider hit)) {
 				PhysicsDebug.DrawDebug(WeaponPosition(), Cleavage, 1.0f);
-				// hit.transform.GetComponent<IHealth>().TakeDamage(Damage);
+				hit.attachedRigidbody.GetComponent<IHealth>().TakeDamage(Damage);
 			}
 		}
 

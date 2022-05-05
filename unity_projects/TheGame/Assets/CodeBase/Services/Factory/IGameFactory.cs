@@ -10,7 +10,7 @@ namespace CodeBase.Services.Factory {
 		GameObject HeroGameObject { get; }
 		event Action HeroCreated;
 		GameObject CreateHero(GameObject at);
-		void CreateHud();
+		void CreateHud(GameObject hero);
 		void Cleanup();
 	}
 }
