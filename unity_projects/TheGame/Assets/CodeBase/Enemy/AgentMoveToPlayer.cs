@@ -7,9 +7,8 @@ using UnityEngine.AI;
 
 namespace CodeBase.Enemy {
 	public class AgentMoveToPlayer : Follow {
-		private const float MinimalDistance = 1;
-
 		public NavMeshAgent Agent;
+		public float MinimalDistance = 1;
 
 		private Transform _heroTransform;
 		private IGameFactory _gameFactory;
