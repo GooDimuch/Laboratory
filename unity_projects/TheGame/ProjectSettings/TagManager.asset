@@ -6,6 +6,7 @@ TagManager:
   tags:
   - LoadingCurtain
   - InitialPoint
+  - FxTemporaire
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Player
   - Aggro
   - Attack
-  - 
+  - Hittable
   - 
   - 
   - 

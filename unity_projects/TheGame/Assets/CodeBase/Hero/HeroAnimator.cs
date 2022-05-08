@@ -3,7 +3,7 @@ using CodeBase.Logic;
 using UnityEngine;
 
 namespace CodeBase.Hero {
-	public class RaptorAnimator : MonoBehaviour, IAnimationStateReader {
+	public class HeroAnimator : MonoBehaviour, IAnimationStateReader {
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] public Animator _animator;
 

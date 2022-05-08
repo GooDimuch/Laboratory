@@ -43,9 +43,10 @@ namespace CodeBase.Enemy {
 		public void DisableAttack() => _attackIsActive = false;
 
 		private void OnAttack() {
-			if (Hit(out Collider hit)) {
+			if (Hit(out var hit)) {
 				PhysicsDebug.DrawDebug(WeaponPosition(), Cleavage, 1.0f);
-				hit.attachedRigidbody.GetComponent<IHealth>().TakeDamage(Damage);
+				var component = hit.attachedRigidbody ? hit.attachedRigidbody.transform : hit.transform;
+				component.GetComponent<IHealth>().TakeDamage(Damage);
 			}
 		}
 

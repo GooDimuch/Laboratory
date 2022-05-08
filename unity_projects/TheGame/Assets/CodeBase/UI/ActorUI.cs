@@ -1,5 +1,3 @@
-using System;
-using CodeBase.Hero;
 using CodeBase.Logic;
 using UnityEngine;
 
@@ -16,7 +14,10 @@ namespace CodeBase.UI {
 				Construct(health);
 		}
 
-		private void OnDestroy() => _health.HealthChanged -= UpdateHpBar;
+		private void OnDestroy() {
+			if (_health != null)
+				_health.HealthChanged -= UpdateHpBar;
+		}
 
 		public void Construct(IHealth health) {
 			_health = health;

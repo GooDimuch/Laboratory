@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace CodeBase.Hero {
 	[RequireComponent(typeof(CharacterController))]
-	public class RaptorMove : MonoBehaviour, ISavedProgress {
+	public class HeroMove : MonoBehaviour, ISavedProgress {
 		[SerializeField] private CharacterController _characterController;
 		[SerializeField] private float _movementSpeed;
 

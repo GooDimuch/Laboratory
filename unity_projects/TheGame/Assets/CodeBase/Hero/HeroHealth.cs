@@ -6,9 +6,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace CodeBase.Hero {
-	[RequireComponent(typeof(RaptorAnimator))]
+	[RequireComponent(typeof(HeroAnimator))]
 	public class HeroHealth : MonoBehaviour, ISavedProgress, IHealth {
-		public RaptorAnimator Animator;
+		public HeroAnimator Animator;
 
 		[SerializeField, ReadOnly] private State _state;
 

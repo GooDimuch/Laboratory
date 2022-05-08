@@ -33,6 +33,9 @@ namespace CodeBase.Infrastructure.States {
 			
 			progress.HeroState.maxHp = 100;
 			progress.HeroState.ResetHp();
+
+			progress.HeroStats.Damage = 50;
+			progress.HeroStats.DamageRadius = 2;
 			
 			return progress;
 		}

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace CodeBase.Hero {
-	public class RaptorSoundEffects : MonoBehaviour {
+	public class HeroSoundEffects : MonoBehaviour {
 		//Variables
 
 		AudioSource audioSource;
