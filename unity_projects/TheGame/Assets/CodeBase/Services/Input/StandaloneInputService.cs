@@ -14,7 +14,11 @@ namespace CodeBase.Services.Input {
 			}
 		}
 
-		private static Vector2 GetUnityAxis() => 
+		private static Vector2 GetUnityAxis() =>
 			new Vector2(UnityEngine.Input.GetAxis(HORIZONTAL), UnityEngine.Input.GetAxis(VERTICAL));
+
+		public override bool IsAttackButtonDown() =>
+			base.IsAttackButtonDown() ||
+			UnityEngine.Input.GetMouseButtonDown(0);
 	}
 }

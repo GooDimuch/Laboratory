@@ -8,10 +8,8 @@ namespace CodeBase.UI {
 		private IHealth _health;
 
 		private void Start() {
-			var health = GetComponent<IHealth>();
-
-			if (health != null)
-				Construct(health);
+			if (_health == null)
+				Construct(GetComponent<IHealth>());
 		}
 
 		private void OnDestroy() {
