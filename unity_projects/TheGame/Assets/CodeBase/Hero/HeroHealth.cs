@@ -1,7 +1,7 @@
 using System;
 using CodeBase.Data;
 using CodeBase.Logic;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

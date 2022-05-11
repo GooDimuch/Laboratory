@@ -2,7 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Services;
 using CodeBase.Services.Factory;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using CodeBase.StaticData;
 using UnityEngine;
 
@@ -35,12 +35,12 @@ namespace CodeBase.Logic {
 		private void Spawn() {
 			var monster = _factory.CreateMonster(MonsterTypeId, transform);
 			_enemyDeath = monster.GetComponent<EnemyDeath>();
-			_enemyDeath.Happaned += Slay;
+			_enemyDeath.Happened += Slay;
 		}
 
 		private void Slay() {
 			if (_enemyDeath)
-				_enemyDeath.Happaned -= Slay;
+				_enemyDeath.Happened -= Slay;
 			Slain = true;
 		}
 	}

@@ -2,7 +2,7 @@ using CodeBase.Data;
 using CodeBase.Logic;
 using CodeBase.Services;
 using CodeBase.Services.Input;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using CodeBase.Utils;
 using Sirenix.OdinInspector;
 using UnityEngine;

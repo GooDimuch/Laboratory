@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CodeBase.Logic;
 using CodeBase.Services;
 using CodeBase.Services.Factory;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoadService;
 
 namespace CodeBase.Infrastructure.States {

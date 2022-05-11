@@ -18,4 +18,6 @@ MonoBehaviour:
   EffectiveDistance: 0.5
   Cleavage: 0.5
   MoveSpeed: 3
+  LootMin: 5
+  LootMax: 10
   Prefab: {fileID: 6850667345649886286, guid: 36f69fe264e9e8747a8ce665702b388a, type: 3}

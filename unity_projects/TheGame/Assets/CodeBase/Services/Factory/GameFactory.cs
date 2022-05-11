@@ -3,7 +3,8 @@ using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Logic;
 using CodeBase.Services.AssetManagement;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
+using CodeBase.Services.Randomizer;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
 using CodeBase.UI;
@@ -15,14 +16,19 @@ namespace CodeBase.Services.Factory {
 	public class GameFactory : IGameFactory {
 		private readonly IAsset _asset;
 		private readonly IStaticDataService _staticData;
+		private readonly IRandomService _randomizer;
+		private readonly IPersistantProgressService _progressService;
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 		private GameObject HeroGameObject { get; set; }
 
-		public GameFactory(IAsset asset, IStaticDataService staticData) {
+		public GameFactory(IAsset asset, IStaticDataService staticData, IRandomService randomizer,
+			IPersistantProgressService progressService) {
 			_asset = asset;
 			_staticData = staticData;
+			_randomizer = randomizer;
+			_progressService = progressService;
 		}
 
 		public GameObject CreateHero(GameObject at) {
@@ -33,6 +39,39 @@ namespace CodeBase.Services.Factory {
 		public void CreateHud(GameObject hero) {
 			var hud = InstantiateRegistered(AssetPath.HUD_PATH);
 			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
+			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
+		}
+
+		public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent) {
+			var monsterData = _staticData.ForMonster(monsterTypeId);
+			var monster = Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
+
+			var health = monster.GetComponent<IHealth>();
+			health.Current = monsterData.Hp;
+			health.Max = monsterData.Hp;
+
+			var attack = monster.GetComponent<Attack>();
+			attack.Constract(HeroGameObject.transform);
+			attack.Damage = monsterData.Damage;
+			attack.Cleavage = monsterData.Cleavage;
+			attack.EffectiveDistance = monsterData.EffectiveDistance;
+
+			var lootSpawner = monster.GetComponentInChildren<LootSpawner>();
+			lootSpawner.Construct(this, _randomizer);
+			lootSpawner.SetLootValue(monsterData.LootMin, monsterData.LootMax);
+
+			monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
+			monster.GetComponent<ActorUI>().Construct(health);
+			monster.GetComponent<AgentMoveToPlayer>().Constract(HeroGameObject.transform);
+			monster.GetComponent<RotateToHero>()?.Constract(HeroGameObject.transform);
+
+			return monster;
+		}
+
+		public LootPiece CreateLoot() {
+			var lootPiece = InstantiateRegistered(AssetPath.LOOT_PATH).GetComponent<LootPiece>();
+			lootPiece.Construct(_progressService.Progress.WorldData);
+			return lootPiece;
 		}
 
 		private GameObject InstantiateRegistered(string prefabPath) =>
@@ -58,28 +97,6 @@ namespace CodeBase.Services.Factory {
 			if (progressReader is ISavedProgress progressWriter)
 				ProgressWriters.Add(progressWriter);
 			ProgressReaders.Add(progressReader);
-		}
-
-		public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent) {
-			var monsterData = _staticData.ForMonster(monsterTypeId);
-			var monster = Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
-
-			var health = monster.GetComponent<IHealth>();
-			health.Current = monsterData.Hp;
-			health.Max = monsterData.Hp;
-
-			var attack = monster.GetComponent<Attack>();
-			attack.Constract(HeroGameObject.transform);
-			attack.Damage = monsterData.Damage;
-			attack.Cleavage = monsterData.Cleavage;
-			attack.EffectiveDistance = monsterData.EffectiveDistance;
-
-			monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
-			monster.GetComponent<ActorUI>().Construct(health);
-			monster.GetComponent<AgentMoveToPlayer>().Constract(HeroGameObject.transform);
-			monster.GetComponent<RotateToHero>()?.Constract(HeroGameObject.transform);
-			
-			return monster;
 		}
 	}
 }

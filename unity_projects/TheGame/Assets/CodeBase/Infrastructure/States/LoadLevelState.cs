@@ -1,7 +1,7 @@
 ﻿using CodeBase.CameraLogic;
 using CodeBase.Logic;
 using CodeBase.Services.Factory;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States {

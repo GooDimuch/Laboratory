@@ -1,7 +1,7 @@
 ﻿using CodeBase.Data;
 using CodeBase.Services;
 using CodeBase.Services.Input;
-using CodeBase.Services.PersistantProgress;
+using CodeBase.Services.PersistentProgress;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
