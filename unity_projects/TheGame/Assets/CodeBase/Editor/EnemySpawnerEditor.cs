@@ -1,11 +1,10 @@
-﻿using System;
-using CodeBase.Logic;
+﻿using CodeBase.Logic.EnemySpawners;
 using UnityEditor;
 using UnityEngine;
 
 namespace CodeBase.Editor {
-	[CustomEditor(typeof(EnemySpawner))]
-	public class EnemySpawnerEditor : UnityEditor.Editor {
+	[CustomEditor(typeof(SpawnMarker))]
+	public class SpawnMarkerEditor : UnityEditor.Editor {
 		private const string TERRAIN_TAG = "Terrain";
 
 		private static Terrain _terrain;
@@ -13,7 +12,7 @@ namespace CodeBase.Editor {
 
 
 		[DrawGizmo(GizmoType.Active | GizmoType.Pickable | GizmoType.NonSelected)]
-		public static void RenderCustomGizmo(EnemySpawner spawner, GizmoType gizmo) {
+		public static void RenderCustomGizmo(SpawnMarker spawner, GizmoType gizmo) {
 			UpdateSpawnerPosition(spawner.transform);
 
 			Gizmos.color = Color.red;

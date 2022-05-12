@@ -2,6 +2,7 @@
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Logic;
+using CodeBase.Logic.EnemySpawners;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.Randomizer;
@@ -31,15 +32,22 @@ namespace CodeBase.Services.Factory {
 			_progressService = progressService;
 		}
 
+		public GameObject CreateHud(GameObject hero) {
+			var hud = InstantiateRegistered(AssetPath.HUD_PATH);
+			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
+			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
+			return hud;
+		}
+
 		public GameObject CreateHero(GameObject at) {
 			HeroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.transform.position, at.transform.rotation);
 			return HeroGameObject;
 		}
 
-		public void CreateHud(GameObject hero) {
-			var hud = InstantiateRegistered(AssetPath.HUD_PATH);
-			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
-			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
+		public SpawnPoint CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId) {
+			var spawner = InstantiateRegistered(AssetPath.SPAWNER_PATH, at, Quaternion.identity)
+				.GetComponent<SpawnPoint>().Construct(spawnerId, monsterTypeId, this);
+			return spawner;
 		}
 
 		public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent) {
@@ -90,10 +98,10 @@ namespace CodeBase.Services.Factory {
 
 		private void RegisterProgressWatchers(GameObject gameObject) {
 			foreach (var progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
-				Register(progressReader);
+				RegisterProgressWatcher(progressReader);
 		}
 
-		public void Register(ISavedProgressReader progressReader) {
+		private void RegisterProgressWatcher(ISavedProgressReader progressReader) {
 			if (progressReader is ISavedProgress progressWriter)
 				ProgressWriters.Add(progressWriter);
 			ProgressReaders.Add(progressReader);
