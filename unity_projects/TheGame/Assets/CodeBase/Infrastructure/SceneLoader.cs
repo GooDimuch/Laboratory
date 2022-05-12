@@ -22,7 +22,7 @@ namespace CodeBase.Infrastructure {
 			var waitNextScene = SceneManager.LoadSceneAsync(nextScene);
 
 			while (!waitNextScene.isDone) {
-				Debug.Log(waitNextScene.progress.ToString());
+				// Debug.Log(waitNextScene.progress.ToString());
 				yield return null;
 			}
 
