@@ -202,6 +202,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: {fileID: 953127393960024}
   Follow: {fileID: -8268302354631827219}
+  CheckAttackRange: {fileID: 243270246850863520}
+  Attack: {fileID: 6995582492079474700}
   Animator: {fileID: 1759886331324184333}
   DeathFx: {fileID: 100006, guid: ffa637a681223e349a279feb6d44915f, type: 3}
 --- !u!114 &1367721104849625027

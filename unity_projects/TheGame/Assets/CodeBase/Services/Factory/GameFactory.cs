@@ -59,7 +59,7 @@ namespace CodeBase.Services.Factory {
 			health.Max = monsterData.Hp;
 
 			var attack = monster.GetComponent<Attack>();
-			attack.Constract(HeroGameObject.transform);
+			attack.Construct(HeroGameObject.transform);
 			attack.Damage = monsterData.Damage;
 			attack.Cleavage = monsterData.Cleavage;
 			attack.EffectiveDistance = monsterData.EffectiveDistance;

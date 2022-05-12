@@ -8,6 +8,8 @@ namespace CodeBase.Enemy {
 		public EnemyHealth Health;
 		
 		public Follow Follow;
+		public CheckAttackRange CheckAttackRange;
+		public Attack Attack;
 		public EnemyAnimator Animator;
 
 		public GameObject DeathFx;
@@ -28,6 +30,8 @@ namespace CodeBase.Enemy {
 		private void Die() {
 			Health.HealthChanged -= OnHealthChanged;
 			Follow.enabled = false;
+			CheckAttackRange.enabled = false;
+			Attack.DisableAttack();
 
 			Animator.PlayDeath();
 			SpawnDeathFx();

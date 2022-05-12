@@ -22,7 +22,7 @@ namespace CodeBase.Enemy {
 
 		private bool _attackIsActive;
 
-		public void Constract(Transform heroTransform) => 
+		public void Construct(Transform heroTransform) => 
 			_heroTransform = heroTransform;
 
 		private void Awake() {
