@@ -6,6 +6,8 @@ using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.Randomizer;
 using CodeBase.Services.SaveLoadService;
 using CodeBase.Services.StaticData;
+using CodeBase.UI.Services.UIFactory;
+using CodeBase.UI.Services.WindowService;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States {
@@ -38,11 +40,10 @@ namespace CodeBase.Infrastructure.States {
 			_services.RegisterSingle<IAsset>(new Asset());
 			_services.RegisterSingle<IRandomService>(new RandomService());
 			_services.RegisterSingle<IPersistantProgressService>(new PersistantProgressService());
-			_services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAsset>(),
-				_services.Single<IStaticDataService>(), _services.Single<IRandomService>(),
-				_services.Single<IPersistantProgressService>()));
-			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(
-				_services.Single<IPersistantProgressService>(), _services.Single<IGameFactory>()));
+			RegisterUIFactory();
+			_services.RegisterSingle<IWindowService>(new WindowService(_services.Single<IUIFactory>()));
+			RegisterGameFactory();
+			RegisterSaveLoadService();
 		}
 
 		private void RegisterStaticData() {
@@ -57,5 +58,24 @@ namespace CodeBase.Infrastructure.States {
 			else
 				return new MobileInputService();
 		}
+
+		private void RegisterUIFactory() =>
+			_services.RegisterSingle<IUIFactory>(new UIFactory(
+				_services.Single<IAsset>(),
+				_services.Single<IStaticDataService>(),
+				_services.Single<IPersistantProgressService>()));
+
+		private void RegisterGameFactory() =>
+			_services.RegisterSingle<IGameFactory>(new GameFactory(
+				_services.Single<IAsset>(),
+				_services.Single<IStaticDataService>(),
+				_services.Single<IRandomService>(),
+				_services.Single<IPersistantProgressService>(),
+				_services.Single<IWindowService>()));
+
+		private void RegisterSaveLoadService() =>
+			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(
+				_services.Single<IPersistantProgressService>(),
+				_services.Single<IGameFactory>()));
 	}
 }
