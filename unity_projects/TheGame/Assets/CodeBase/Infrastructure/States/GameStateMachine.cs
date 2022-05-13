@@ -18,11 +18,11 @@ namespace CodeBase.Infrastructure.States {
 				[typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
 				[typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, loadingCurtain,
 					services.Single<IGameFactory>(),
-					services.Single<IPersistantProgressService>(),
+					services.Single<IPersistentProgressService>(),
 					services.Single<IStaticDataService>(),
 					services.Single<IUIFactory>()),
 				[typeof(LoadProgressState)] = new LoadProgressState(this,
-					services.Single<IPersistantProgressService>(),
+					services.Single<IPersistentProgressService>(),
 					services.Single<ISaveLoadService>()),
 				[typeof(GameLoopState)] = new GameLoopState(this),
 			};

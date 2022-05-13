@@ -15,12 +15,12 @@ namespace CodeBase.Infrastructure.States {
 		private readonly SceneLoader _sceneLoader;
 		private readonly LoadingCurtain _loadingCurtain;
 		private readonly IGameFactory _gameFactory;
-		private readonly IPersistantProgressService _progressService;
+		private readonly IPersistentProgressService _progressService;
 		private readonly IStaticDataService _staticDataService;
 		private readonly IUIFactory _uiFactory;
 
 		public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
-			IGameFactory gameFactory, IPersistantProgressService progressService, IStaticDataService staticDataService,
+			IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService,
 			IUIFactory uiFactory) {
 			_stateMachine = gameStateMachine;
 			_sceneLoader = sceneLoader;

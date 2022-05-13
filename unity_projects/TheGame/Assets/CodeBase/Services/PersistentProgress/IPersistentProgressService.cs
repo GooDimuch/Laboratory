@@ -1,5 +1,5 @@
 ﻿namespace CodeBase.Services.PersistentProgress {
-	public interface IPersistantProgressService : IService {
+	public interface IPersistentProgressService : IService {
 		Data.PlayerProgress Progress { get; set; }
 	}
 }

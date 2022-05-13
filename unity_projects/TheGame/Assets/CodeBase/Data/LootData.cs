@@ -8,8 +8,11 @@ namespace CodeBase.Data {
 
 		public event Action Changed;
 
-		public void Collect(Loot loot) {
-			Collected += loot.Value;
+		public void Collect(Loot loot) =>
+			Collect(loot.Value);
+
+		public void Collect(int value) {
+			Collected += value;
 			Changed?.Invoke();
 		}
 	}

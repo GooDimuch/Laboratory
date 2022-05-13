@@ -7,10 +7,10 @@ namespace CodeBase.Infrastructure.States {
 		private const string GAME_SCENE = "GameScene";
 
 		private readonly GameStateMachine _gameStateMachine;
-		private readonly IPersistantProgressService _progressService;
+		private readonly IPersistentProgressService _progressService;
 		private readonly ISaveLoadService _saveLoadService;
 
-		public LoadProgressState(GameStateMachine gameStateMachine, IPersistantProgressService progressService,
+		public LoadProgressState(GameStateMachine gameStateMachine, IPersistentProgressService progressService,
 			ISaveLoadService saveLoadService) {
 			_gameStateMachine = gameStateMachine;
 			_progressService = progressService;

@@ -20,7 +20,7 @@ namespace CodeBase.Services.Factory {
 		private readonly IAsset _asset;
 		private readonly IStaticDataService _staticData;
 		private readonly IRandomService _randomizer;
-		private readonly IPersistantProgressService _progressService;
+		private readonly IPersistentProgressService _progressService;
 		private readonly IWindowService _windowService;
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
@@ -28,7 +28,7 @@ namespace CodeBase.Services.Factory {
 		private GameObject HeroGameObject { get; set; }
 
 		public GameFactory(IAsset asset, IStaticDataService staticData, IRandomService randomizer,
-			IPersistantProgressService progressService, IWindowService windowService) {
+			IPersistentProgressService progressService, IWindowService windowService) {
 			_asset = asset;
 			_staticData = staticData;
 			_randomizer = randomizer;
