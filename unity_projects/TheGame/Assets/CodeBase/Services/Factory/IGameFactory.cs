@@ -14,13 +14,13 @@ namespace CodeBase.Services.Factory {
 		List<ISavedProgressReader> ProgressReaders { get; }
 		List<ISavedProgress> ProgressWriters { get; }
 		Task WarmUp();
-		GameObject CreateHud(GameObject hero);
-		GameObject CreateHero(TransformData at);
+		Task<GameObject> CreateHud(GameObject hero);
+		Task<GameObject> CreateHero(TransformData at);
 		Task<SpawnPoint> CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId);
 		Task<GameObject> CreateMonster(MonsterTypeId monsterTypeId, Transform parent);
 		Task<LootPiece> CreateLoot();
-		void CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService);
-		void CreateLevelTransferTrigger(LevelTransferTriggerData at);
+		Task CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService);
+		Task CreateLevelTransferTrigger(LevelTransferTriggerData at);
 		void Cleanup();
 	}
 }

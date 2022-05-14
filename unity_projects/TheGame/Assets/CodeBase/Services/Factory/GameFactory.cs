@@ -50,8 +50,8 @@ namespace CodeBase.Services.Factory {
 			await _assetProvider.Load<GameObject>(AssetAddress.SPAWNER_ADDRESS);
 		}
 
-		public GameObject CreateHud(GameObject hero) {
-			var hud = InstantiateRegistered(AssetAddress.HUD_PATH);
+		public async Task<GameObject> CreateHud(GameObject hero) {
+			var hud = await InstantiateRegisteredAsync(AssetAddress.HUD_PATH);
 			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
 			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
 			foreach (var windowButton in hud.GetComponentsInChildren<OpenWindowButton>())
@@ -59,8 +59,9 @@ namespace CodeBase.Services.Factory {
 			return hud;
 		}
 
-		public GameObject CreateHero(TransformData at) {
-			var heroGameObject = InstantiateRegistered(AssetAddress.HERO_PATH, at.position.AsUnityVector(), at.rotation);
+		public async Task<GameObject> CreateHero(TransformData at) {
+			var heroGameObject =
+				await InstantiateRegisteredAsync(AssetAddress.HERO_PATH, at.position.AsUnityVector(), at.rotation);
 			HeroTransform = heroGameObject.transform;
 			return heroGameObject;
 		}
@@ -107,28 +108,35 @@ namespace CodeBase.Services.Factory {
 			return lootPiece;
 		}
 
-		public void CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService) {
-			var trigger = InstantiateRegistered(AssetAddress.SAVE_TRIGGER_PATH, at.transform.position.AsUnityVector(),
-				at.transform.rotation).GetComponent<SaveTrigger>();
+		public async Task CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService) {
+			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.SAVE_TRIGGER_PATH,
+				at.transform.position.AsUnityVector(), at.transform.rotation);
+			var trigger = triggerGameObject.GetComponent<SaveTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();
 			collider.size = at.size.AsUnityVector();
 			trigger.Construct(saveLoadService);
 		}
 
-		public void CreateLevelTransferTrigger(LevelTransferTriggerData at) {
-			var trigger =
-				InstantiateRegistered(AssetAddress.LEVEL_TRANSFER_TRIGGER_PATH, at.transform.position.AsUnityVector(),
-					at.transform.rotation).GetComponent<LevelTransferTrigger>();
+		public async Task CreateLevelTransferTrigger(LevelTransferTriggerData at) {
+			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.LEVEL_TRANSFER_TRIGGER_PATH,
+				at.transform.position.AsUnityVector(), at.transform.rotation);
+			var trigger = triggerGameObject.GetComponent<LevelTransferTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();
 			collider.size = at.size.AsUnityVector();
 			trigger.Construct(_stateMachine, LoadLevelState.GetLevelByName(at.TransferTo));
 		}
 
-		private GameObject InstantiateRegistered(string prefabPath) =>
-			InstantiateRegistered(prefabPath, Vector3.zero, Quaternion.identity);
+		public void Cleanup() {
+			ProgressReaders.Clear();
+			ProgressWriters.Clear();
+			_assetProvider.Cleanup();
+		}
 
-		private GameObject InstantiateRegistered(string prefabPath, Vector3 at, Quaternion with) {
-			var gameObject = _assetProvider.Instantiate(path: prefabPath, at: at, with: with);
+		private Task<GameObject> InstantiateRegisteredAsync(string address) =>
+			InstantiateRegisteredAsync(address, Vector3.zero, Quaternion.identity);
+
+		private async Task<GameObject> InstantiateRegisteredAsync(string address, Vector3 at, Quaternion with) {
+			var gameObject = await _assetProvider.InstantiateAsync(address: address, at: at, with: with);
 			RegisterProgressWatchers(gameObject);
 			return gameObject;
 		}
@@ -140,12 +148,6 @@ namespace CodeBase.Services.Factory {
 			var gameObject = Object.Instantiate(prefab, at, with);
 			RegisterProgressWatchers(gameObject);
 			return gameObject;
-		}
-
-		public void Cleanup() {
-			ProgressReaders.Clear();
-			ProgressWriters.Clear();
-			_assetProvider.Cleanup();
 		}
 
 		private void RegisterProgressWatchers(GameObject gameObject) {

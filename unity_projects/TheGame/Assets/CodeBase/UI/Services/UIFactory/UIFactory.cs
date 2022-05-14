@@ -1,9 +1,9 @@
-﻿using CodeBase.Services.Ads;
+﻿using System.Threading.Tasks;
+using CodeBase.Services.Ads;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.StaticData;
 using CodeBase.UI.Services.WindowService;
-using CodeBase.UI.Windows;
 using CodeBase.UI.Windows.Shop;
 using UnityEngine;
 
@@ -16,7 +16,8 @@ namespace CodeBase.UI.Services.UIFactory {
 
 		private Transform _uiRoot;
 
-		public UIFactory(IAssetProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService progressService,
+		public UIFactory(IAssetProvider assetsProvider, IStaticDataService staticData,
+			IPersistentProgressService progressService,
 			IAdsService adsService) {
 			_assetsProvider = assetsProvider;
 			_staticData = staticData;
@@ -30,7 +31,9 @@ namespace CodeBase.UI.Services.UIFactory {
 			window.Construct(_progressService, _adsService);
 		}
 
-		public void CreateUIRoot() =>
-			_uiRoot = _assetsProvider.Instantiate(AssetAddress.UI_ROOT_PATH).transform;
+		public async Task CreateUIRoot() {
+			var uiRootGameObject = await _assetsProvider.InstantiateAsync(AssetAddress.UI_ROOT_PATH);
+			_uiRoot = uiRootGameObject.transform;
+		}
 	}
 }

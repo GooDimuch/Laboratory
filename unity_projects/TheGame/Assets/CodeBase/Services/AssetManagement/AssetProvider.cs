@@ -44,17 +44,14 @@ namespace CodeBase.Services.AssetManagement {
 			_handles.Clear();
 		}
 
-		public GameObject Instantiate(string path) =>
-			Instantiate(path, Vector3.zero, Quaternion.identity);
+		public Task<GameObject> InstantiateAsync(string address) =>
+			InstantiateAsync(address, Vector3.zero, Quaternion.identity);
 
-		public GameObject Instantiate(string path, Vector3 at) =>
-			Instantiate(path, at, Quaternion.identity);
+		public Task<GameObject> InstantiateAsync(string address, Vector3 at) =>
+			InstantiateAsync(address, at, Quaternion.identity);
 
-		public GameObject Instantiate(string path, Vector3 at, Quaternion with) {
-			var prefab = Resources.Load<GameObject>(path);
-			if (prefab == null) throw new NullReferenceException($"Prefab not found by path '{path}'");
-			return Object.Instantiate(prefab, at, with);
-		}
+		public Task<GameObject> InstantiateAsync(string address, Vector3 at, Quaternion with) =>
+			Addressables.InstantiateAsync(address, at, with).Task;
 
 		private async Task<T> RunWithCacheOnComplete<T>(AsyncOperationHandle<T> handle, string cacheKey) where T : class {
 			handle.Completed += completeHandle => { _completedCache[cacheKey] = completeHandle; };

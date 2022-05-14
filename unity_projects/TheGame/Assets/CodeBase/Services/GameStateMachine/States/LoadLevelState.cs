@@ -60,7 +60,7 @@ namespace CodeBase.Services.GameStateMachine.States {
 			: throw new ArgumentException($"Level with name '{name}' not found");
 
 		private async void OnLoaded() {
-			InitUI();
+			await InitUI();
 			await InitGameWorld();
 			LoadProgress();
 
@@ -72,29 +72,29 @@ namespace CodeBase.Services.GameStateMachine.States {
 				progressReader.LoadProgress(_progressService.Progress);
 		}
 
-		private void InitUI() {
-			_uiFactory.CreateUIRoot();
+		private async Task InitUI() {
+			await _uiFactory.CreateUIRoot();
 		}
 
 		private async Task InitGameWorld() {
 			var levelData = LevelStaticData();
 
-			InitSaveTriggers(levelData);
-			InitLevelTransferTrigger(levelData);
+			await InitSaveTriggers(levelData);
+			await InitLevelTransferTrigger(levelData);
 			await InitEnemySpawners(levelData);
 			await InitDroppedLoot();
-			var hero = InitHero(levelData);
-			_gameFactory.CreateHud(hero);
+			var hero = await InitHero(levelData);
+			await _gameFactory.CreateHud(hero);
 			CameraFollow(hero);
 		}
 
-		private void InitSaveTriggers(LevelStaticData levelData) {
+		private async Task InitSaveTriggers(LevelStaticData levelData) {
 			foreach (var triggerTransform in levelData.SaveTriggerTransforms)
-				_gameFactory.CreateSaveTrigger(triggerTransform, _saveLoadService);
+				await _gameFactory.CreateSaveTrigger(triggerTransform, _saveLoadService);
 		}
 
-		private void InitLevelTransferTrigger(LevelStaticData levelData) =>
-			_gameFactory.CreateLevelTransferTrigger(levelData.NextLevelTriggerTransform);
+		private async Task InitLevelTransferTrigger(LevelStaticData levelData) =>
+			await _gameFactory.CreateLevelTransferTrigger(levelData.NextLevelTriggerTransform);
 
 		private async Task InitEnemySpawners(LevelStaticData levelData) {
 			foreach (var spawnerData in levelData.EnemySpawners)
@@ -110,8 +110,8 @@ namespace CodeBase.Services.GameStateMachine.States {
 			}
 		}
 
-		private GameObject InitHero(LevelStaticData levelData) =>
-			_gameFactory.CreateHero(levelData.InitialHeroTransform);
+		private async Task<GameObject> InitHero(LevelStaticData levelData) =>
+			await _gameFactory.CreateHero(levelData.InitialHeroTransform);
 
 		private LevelStaticData LevelStaticData() =>
 			_staticDataService.ForLevel(SceneManager.GetActiveScene().name);
