@@ -1,11 +1,11 @@
 ﻿using System;
 using CodeBase.UI.Services.WindowService;
-using CodeBase.UI.Windows;
+using UnityEngine.AddressableAssets;
 
 namespace CodeBase.StaticData {
 	[Serializable]
 	public class WindowConfig {
 		public WindowId WindowId;
-		public BaseWindow Prefab;
+		public AssetReferenceGameObject PrefabReferance;
 	}
 }

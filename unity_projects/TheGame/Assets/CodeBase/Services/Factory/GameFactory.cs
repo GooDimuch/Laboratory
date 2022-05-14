@@ -51,7 +51,7 @@ namespace CodeBase.Services.Factory {
 		}
 
 		public async Task<GameObject> CreateHud(GameObject hero) {
-			var hud = await InstantiateRegisteredAsync(AssetAddress.HUD_PATH);
+			var hud = await InstantiateRegisteredAsync(AssetAddress.HUD_ADDRESS);
 			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
 			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
 			foreach (var windowButton in hud.GetComponentsInChildren<OpenWindowButton>())
@@ -61,7 +61,7 @@ namespace CodeBase.Services.Factory {
 
 		public async Task<GameObject> CreateHero(TransformData at) {
 			var heroGameObject =
-				await InstantiateRegisteredAsync(AssetAddress.HERO_PATH, at.position.AsUnityVector(), at.rotation);
+				await InstantiateRegisteredAsync(AssetAddress.HERO_ADDRESS, at.position.AsUnityVector(), at.rotation);
 			HeroTransform = heroGameObject.transform;
 			return heroGameObject;
 		}
@@ -109,7 +109,7 @@ namespace CodeBase.Services.Factory {
 		}
 
 		public async Task CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService) {
-			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.SAVE_TRIGGER_PATH,
+			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.SAVE_TRIGGER_ADDRESS,
 				at.transform.position.AsUnityVector(), at.transform.rotation);
 			var trigger = triggerGameObject.GetComponent<SaveTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();
@@ -118,7 +118,7 @@ namespace CodeBase.Services.Factory {
 		}
 
 		public async Task CreateLevelTransferTrigger(LevelTransferTriggerData at) {
-			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.LEVEL_TRANSFER_TRIGGER_PATH,
+			var triggerGameObject = await InstantiateRegisteredAsync(AssetAddress.LEVEL_TRANSFER_TRIGGER_ADDRESS,
 				at.transform.position.AsUnityVector(), at.transform.rotation);
 			var trigger = triggerGameObject.GetComponent<LevelTransferTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();

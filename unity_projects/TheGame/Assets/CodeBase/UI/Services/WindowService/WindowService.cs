@@ -8,12 +8,12 @@ namespace CodeBase.UI.Services.WindowService {
 			_uiFactory = uiFactory;
 		}
 
-		public void Open(WindowId windowId) {
+		public async void Open(WindowId windowId) {
 			switch (windowId) {
 				case WindowId.Unknown:
 					break;
 				case WindowId.Shop:
-					_uiFactory.CreateShop();
+					await _uiFactory.CreateShop();
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(windowId), windowId, null);

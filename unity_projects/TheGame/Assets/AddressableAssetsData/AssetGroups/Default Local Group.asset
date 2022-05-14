@@ -49,6 +49,14 @@ MonoBehaviour:
     m_Address: SaveTrigger
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: ce3c956486af1ae4d98eb3606968cb42
+    m_Address: Shop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6973f747840020d498fe72817da6ba98
+    m_Address: UIRoot
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 72f9cc9186222094e9cb2b700407766b, type: 2}
   m_SchemaSet:

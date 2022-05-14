@@ -3,7 +3,8 @@ using CodeBase.Services;
 
 namespace CodeBase.UI.Services.UIFactory {
 	public interface IUIFactory : IService {
-		void CreateShop();
+		Task WarmUp();
+		Task CreateShop();
 		Task CreateUIRoot();
 	}
 }
