@@ -41,7 +41,7 @@ namespace CodeBase.Services.Ads {
 		}
 
 		public void OnUnityAdsReady(string placementId) {
-			Debug.Log($"OnUnityAdsReady {placementId}");
+			// Debug.Log($"OnUnityAdsReady {placementId}");
 
 			if (placementId == _placementId)
 				RewardedVideoReady?.Invoke();
