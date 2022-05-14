@@ -20,4 +20,8 @@ MonoBehaviour:
   MoveSpeed: 3
   LootMin: 5
   LootMax: 10
-  Prefab: {fileID: 6850667345649886286, guid: 36f69fe264e9e8747a8ce665702b388a, type: 3}
+  PrefabReference:
+    m_AssetGUID: 36f69fe264e9e8747a8ce665702b388a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

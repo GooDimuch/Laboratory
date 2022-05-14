@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CodeBase.Data;
+﻿using CodeBase.Data;
 using CodeBase.Enemy;
 using CodeBase.Services.Factory;
 using CodeBase.Services.PersistentProgress;
@@ -41,8 +40,8 @@ namespace CodeBase.Logic.EnemySpawners {
 				slainSpawnersList.Add(Id);
 		}
 
-		private void Spawn() {
-			var monster = _factory.CreateMonster(MonsterTypeId, transform);
+		private async void Spawn() {
+			var monster = await _factory.CreateMonster(MonsterTypeId, transform);
 			_enemyDeath = monster.GetComponent<EnemyDeath>();
 			_enemyDeath.Happened += Slay;
 		}

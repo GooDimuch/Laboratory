@@ -48,23 +48,6 @@ MonoBehaviour:
   SaveTriggerTransforms:
   - transform:
       position:
-        X: 6
-        Y: 1
-        Z: -15.06
-      _rotation:
-        X: -0
-        Y: 90
-        Z: -0
-      scale:
-        X: 1
-        Y: 1
-        Z: 1
-    size:
-      X: 3
-      Y: 2
-      Z: 1
-  - transform:
-      position:
         X: -2.3
         Y: 1
         Z: -3.6
@@ -80,28 +63,45 @@ MonoBehaviour:
       X: 3
       Y: 2
       Z: 1
+  - transform:
+      position:
+        X: 6
+        Y: 1
+        Z: -15.06
+      _rotation:
+        X: -0
+        Y: 90
+        Z: -0
+      scale:
+        X: 1
+        Y: 1
+        Z: 1
+    size:
+      X: 3
+      Y: 2
+      Z: 1
   EnemySpawners:
-  - Id: GameScene_da1ecbd4-8380-450b-9ebb-102d578162b6
+  - Id: Level_2_50f51f22-9fbe-4993-909e-0402b5561cff
     MonsterTypeId: 0
-    Position: {x: -6.1, y: 0, z: -9.9}
-  - Id: GameScene_9b1cf314-64e7-4438-8d24-b37ca9aba760
-    MonsterTypeId: 0
+    Position: {x: -1.1, y: 0, z: 0.6}
+  - Id: Level_2_a680f086-8588-461d-93b7-67e401dcb29d
+    MonsterTypeId: 10
     Position: {x: 3.4, y: 0, z: 3.4}
+  - Id: Level_2_f662e381-f8ac-4e15-afa6-d6e6dc6710c7
+    MonsterTypeId: 10
+    Position: {x: -6.1, y: 0, z: -9.9}
   - Id: SpawnMarker_6376f5d6-7d92-4e8d-ae06-53b3fc5dba9c
     MonsterTypeId: 10
     Position: {x: 0.3, y: 0, z: 8.5}
-  - Id: GameScene_fe51669c-d115-480d-9497-69fe8565a4fa
-    MonsterTypeId: 0
-    Position: {x: 11.8, y: 0.109062634, z: -13.9}
-  - Id: GameScene_fa573932-1fc1-4961-a9bf-ab82d7787cbf
+  - Id: Level_2_c9dfbab3-12bf-42a4-8d3e-65c938ce2f34
     MonsterTypeId: 0
     Position: {x: 7.8, y: 0, z: -1.7}
-  - Id: GameScene_bb75e98f-66be-47c0-b7a9-01417d6a01a3
+  - Id: Level_2_7eed6842-5626-44f8-920e-123b3c9c7a7a
+    MonsterTypeId: 0
+    Position: {x: 11.8, y: 0.109062634, z: -13.9}
+  - Id: Level_2_efa2f8b1-76e3-4f2c-992f-0c44ee8458b4
     MonsterTypeId: 10
     Position: {x: -15.8, y: 0.79301643, z: -5.96}
   - Id: GameScene_33aa8ab3-cda8-4352-8dff-6df0ff6b8cab
     MonsterTypeId: 0
     Position: {x: -5, y: 0, z: 4.2}
-  - Id: GameScene_10b8d80b-06c9-46a4-ab02-97e559c01502
-    MonsterTypeId: 0
-    Position: {x: -1.1, y: 0, z: 0.6}

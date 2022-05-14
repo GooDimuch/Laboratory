@@ -26,9 +26,8 @@ namespace CodeBase.Services.GameStateMachine.States {
 			RegisterServices();
 		}
 
-		public void Enter() {
+		public void Enter() =>
 			_sceneLoader.Load(INITIAL, onLoaded: EnterLoadLevel);
-		}
 
 		public void Exit() { }
 
@@ -40,7 +39,7 @@ namespace CodeBase.Services.GameStateMachine.States {
 			RegisterAdsService();
 			_services.RegisterSingle<IGameStateMachine>(_stateMachine);
 			_services.RegisterSingle<IInputService>(InputService());
-			_services.RegisterSingle<IAsset>(new Asset());
+			RegisterAssetProvider();
 			_services.RegisterSingle<IRandomService>(new RandomService());
 			_services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
 			RegisterUIFactory();
@@ -61,6 +60,12 @@ namespace CodeBase.Services.GameStateMachine.States {
 			_services.RegisterSingle<IAdsService>(adsService);
 		}
 
+		private void RegisterAssetProvider() {
+			var assetProvider = new AssetProvider();
+			assetProvider.Initialize();
+			_services.RegisterSingle<IAssetProvider>(assetProvider);
+		}
+
 		private static IInputService InputService() {
 			if (Application.installMode == ApplicationInstallMode.Editor)
 				return new StandaloneInputService();
@@ -70,14 +75,14 @@ namespace CodeBase.Services.GameStateMachine.States {
 
 		private void RegisterUIFactory() =>
 			_services.RegisterSingle<IUIFactory>(new UIFactory(
-				_services.Single<IAsset>(),
+				_services.Single<IAssetProvider>(),
 				_services.Single<IStaticDataService>(),
 				_services.Single<IPersistentProgressService>(),
 				_services.Single<IAdsService>()));
 
 		private void RegisterGameFactory() =>
 			_services.RegisterSingle<IGameFactory>(new GameFactory(
-				_services.Single<IAsset>(),
+				_services.Single<IAssetProvider>(),
 				_services.Single<IStaticDataService>(),
 				_services.Single<IRandomService>(),
 				_services.Single<IPersistentProgressService>(),

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.Data;
 using CodeBase.Data.Triggers;
 using CodeBase.Enemy;
@@ -23,7 +24,7 @@ using Object = UnityEngine.Object;
 
 namespace CodeBase.Services.Factory {
 	public class GameFactory : IGameFactory {
-		private readonly IAsset _asset;
+		private readonly IAssetProvider _assetProvider;
 		private readonly IStaticDataService _staticData;
 		private readonly IRandomService _randomizer;
 		private readonly IPersistentProgressService _progressService;
@@ -34,9 +35,9 @@ namespace CodeBase.Services.Factory {
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 		private Transform HeroTransform { get; set; }
 
-		public GameFactory(IAsset asset, IStaticDataService staticData, IRandomService randomizer,
+		public GameFactory(IAssetProvider assetProvider, IStaticDataService staticData, IRandomService randomizer,
 			IPersistentProgressService progressService, IWindowService windowService, IGameStateMachine stateMachine) {
-			_asset = asset;
+			_assetProvider = assetProvider;
 			_staticData = staticData;
 			_randomizer = randomizer;
 			_progressService = progressService;
@@ -44,8 +45,13 @@ namespace CodeBase.Services.Factory {
 			_stateMachine = stateMachine;
 		}
 
+		public async Task WarmUp() {
+			await _assetProvider.Load<GameObject>(AssetAddress.LOOT_ADDRESS);
+			await _assetProvider.Load<GameObject>(AssetAddress.SPAWNER_ADDRESS);
+		}
+
 		public GameObject CreateHud(GameObject hero) {
-			var hud = InstantiateRegistered(AssetPath.HUD_PATH);
+			var hud = InstantiateRegistered(AssetAddress.HUD_PATH);
 			hud.GetComponentInChildren<ActorUI>().Construct(hero.GetComponent<HeroHealth>());
 			hud.GetComponentInChildren<LootCounter>().Construct(_progressService.Progress.WorldData);
 			foreach (var windowButton in hud.GetComponentsInChildren<OpenWindowButton>())
@@ -54,20 +60,23 @@ namespace CodeBase.Services.Factory {
 		}
 
 		public GameObject CreateHero(TransformData at) {
-			var heroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.position.AsUnityVector(), at.rotation);
+			var heroGameObject = InstantiateRegistered(AssetAddress.HERO_PATH, at.position.AsUnityVector(), at.rotation);
 			HeroTransform = heroGameObject.transform;
 			return heroGameObject;
 		}
 
-		public SpawnPoint CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId) {
-			var spawner = InstantiateRegistered(AssetPath.SPAWNER_PATH, at, Quaternion.identity)
+		public async Task<SpawnPoint> CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId) {
+			var prefab = await _assetProvider.Load<GameObject>(AssetAddress.SPAWNER_ADDRESS);
+			var spawner = InstantiateRegistered(prefab, at, Quaternion.identity)
 				.GetComponent<SpawnPoint>().Construct(spawnerId, monsterTypeId, this);
 			return spawner;
 		}
 
-		public GameObject CreateMonster(MonsterTypeId monsterTypeId, Transform parent) {
+		public async Task<GameObject> CreateMonster(MonsterTypeId monsterTypeId, Transform parent) {
 			var monsterData = _staticData.ForMonster(monsterTypeId);
-			var monster = Object.Instantiate(monsterData.Prefab, parent.position, Quaternion.identity, parent);
+
+			var prefab = await _assetProvider.Load<GameObject>(monsterData.PrefabReference);
+			var monster = Object.Instantiate(prefab, parent.position, Quaternion.identity, parent);
 
 			var health = monster.GetComponent<IHealth>();
 			health.Current = monsterData.Hp;
@@ -91,14 +100,15 @@ namespace CodeBase.Services.Factory {
 			return monster;
 		}
 
-		public LootPiece CreateLoot() {
-			var lootPiece = InstantiateRegistered(AssetPath.LOOT_PATH).GetComponent<LootPiece>();
+		public async Task<LootPiece> CreateLoot() {
+			var prefab = await _assetProvider.Load<GameObject>(AssetAddress.LOOT_ADDRESS);
+			var lootPiece = InstantiateRegistered(prefab).GetComponent<LootPiece>();
 			lootPiece.Construct(_progressService.Progress.WorldData);
 			return lootPiece;
 		}
 
 		public void CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService) {
-			var trigger = InstantiateRegistered(AssetPath.SAVE_TRIGGER_PATH, at.transform.position.AsUnityVector(),
+			var trigger = InstantiateRegistered(AssetAddress.SAVE_TRIGGER_PATH, at.transform.position.AsUnityVector(),
 				at.transform.rotation).GetComponent<SaveTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();
 			collider.size = at.size.AsUnityVector();
@@ -107,7 +117,7 @@ namespace CodeBase.Services.Factory {
 
 		public void CreateLevelTransferTrigger(LevelTransferTriggerData at) {
 			var trigger =
-				InstantiateRegistered(AssetPath.LEVEL_TRANSFER_TRIGGER_PATH, at.transform.position.AsUnityVector(),
+				InstantiateRegistered(AssetAddress.LEVEL_TRANSFER_TRIGGER_PATH, at.transform.position.AsUnityVector(),
 					at.transform.rotation).GetComponent<LevelTransferTrigger>();
 			var collider = trigger.GetComponent<BoxCollider>();
 			collider.size = at.size.AsUnityVector();
@@ -118,7 +128,16 @@ namespace CodeBase.Services.Factory {
 			InstantiateRegistered(prefabPath, Vector3.zero, Quaternion.identity);
 
 		private GameObject InstantiateRegistered(string prefabPath, Vector3 at, Quaternion with) {
-			var gameObject = _asset.Instantiate(path: prefabPath, at: at, with: with);
+			var gameObject = _assetProvider.Instantiate(path: prefabPath, at: at, with: with);
+			RegisterProgressWatchers(gameObject);
+			return gameObject;
+		}
+
+		private GameObject InstantiateRegistered(GameObject prefab) =>
+			InstantiateRegistered(prefab, Vector3.zero, Quaternion.identity);
+
+		private GameObject InstantiateRegistered(GameObject prefab, Vector3 at, Quaternion with) {
+			var gameObject = Object.Instantiate(prefab, at, with);
 			RegisterProgressWatchers(gameObject);
 			return gameObject;
 		}
@@ -126,6 +145,7 @@ namespace CodeBase.Services.Factory {
 		public void Cleanup() {
 			ProgressReaders.Clear();
 			ProgressWriters.Clear();
+			_assetProvider.Cleanup();
 		}
 
 		private void RegisterProgressWatchers(GameObject gameObject) {

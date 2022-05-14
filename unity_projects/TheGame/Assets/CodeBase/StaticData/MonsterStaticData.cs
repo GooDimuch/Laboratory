@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace CodeBase.StaticData {
 	[CreateAssetMenu(fileName = "MonsterData", menuName = "Static Data/Monster")]
@@ -13,6 +14,6 @@ namespace CodeBase.StaticData {
 		public int LootMin;
 		public int LootMax;
 
-		public GameObject Prefab;
+		public AssetReferenceGameObject PrefabReference;
 	}
 }

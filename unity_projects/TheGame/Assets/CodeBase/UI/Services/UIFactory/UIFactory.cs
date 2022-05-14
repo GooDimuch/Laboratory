@@ -9,16 +9,16 @@ using UnityEngine;
 
 namespace CodeBase.UI.Services.UIFactory {
 	public class UIFactory : IUIFactory {
-		private readonly IAsset _assets;
+		private readonly IAssetProvider _assetsProvider;
 		private readonly IStaticDataService _staticData;
 		private readonly IPersistentProgressService _progressService;
 		private readonly IAdsService _adsService;
 
 		private Transform _uiRoot;
 
-		public UIFactory(IAsset assets, IStaticDataService staticData, IPersistentProgressService progressService,
+		public UIFactory(IAssetProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService progressService,
 			IAdsService adsService) {
-			_assets = assets;
+			_assetsProvider = assetsProvider;
 			_staticData = staticData;
 			_progressService = progressService;
 			_adsService = adsService;
@@ -31,6 +31,6 @@ namespace CodeBase.UI.Services.UIFactory {
 		}
 
 		public void CreateUIRoot() =>
-			_uiRoot = _assets.Instantiate(AssetPath.UI_ROOT_PATH).transform;
+			_uiRoot = _assetsProvider.Instantiate(AssetAddress.UI_ROOT_PATH).transform;
 	}
 }

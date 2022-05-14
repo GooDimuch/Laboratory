@@ -28,11 +28,11 @@ namespace CodeBase.Enemy {
 			_maxValue = max;
 		}
 
-		private void SpawnLoot() {
+		private async void SpawnLoot() {
 			EnemyDeath.Happened -= SpawnLoot;
 
 			var loot = GenerateLoot();
-			var lootPiece = _factory.CreateLoot();
+			var lootPiece = await _factory.CreateLoot();
 			lootPiece.transform.position = transform.position;
 			// lootPiece.GetComponent<UniqueId>().GenerateId();
 			lootPiece.Initialize(loot);

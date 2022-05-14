@@ -890,15 +890,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1269585577436207689, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.260001
+      value: 0.00000050143643
       objectReference: {fileID: 0}
     - target: {fileID: 1269585577436207689, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.69152
+      value: 10.69152
       objectReference: {fileID: 0}
     - target: {fileID: 1269585577436207689, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.3057637
+      value: 25.735764
       objectReference: {fileID: 0}
     - target: {fileID: 1269585577436207689, guid: fe691d08050018a4b9669e93dfc6295a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1056,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_bb75e98f-66be-47c0-b7a9-01417d6a01a3
+      value: Level_2_efa2f8b1-76e3-4f2c-992f-0c44ee8458b4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
@@ -2238,7 +2238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_fe51669c-d115-480d-9497-69fe8565a4fa
+      value: Level_2_7eed6842-5626-44f8-920e-123b3c9c7a7a
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
@@ -2304,7 +2304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_fa573932-1fc1-4961-a9bf-ab82d7787cbf
+      value: Level_2_c9dfbab3-12bf-42a4-8d3e-65c938ce2f34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
@@ -3926,6 +3926,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1505197284}
     m_Modifications:
+    - target: {fileID: 1158363581289784164, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
+      propertyPath: MonsterTypeId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1158363581289784165, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -3976,7 +3980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_da1ecbd4-8380-450b-9ebb-102d578162b6
+      value: Level_2_f662e381-f8ac-4e15-afa6-d6e6dc6710c7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
@@ -4159,6 +4163,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1505197284}
     m_Modifications:
+    - target: {fileID: 1158363581289784164, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
+      propertyPath: MonsterTypeId
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1158363581289784165, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4209,7 +4217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_9b1cf314-64e7-4438-8d24-b37ca9aba760
+      value: Level_2_a680f086-8588-461d-93b7-67e401dcb29d
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
@@ -4341,7 +4349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890673051543416655, guid: 68364771e3491da47a50c82b49e2f302, type: 3}
       propertyPath: Id
-      value: GameScene_10b8d80b-06c9-46a4-ab02-97e559c01502
+      value: Level_2_50f51f22-9fbe-4993-909e-0402b5561cff
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68364771e3491da47a50c82b49e2f302, type: 3}

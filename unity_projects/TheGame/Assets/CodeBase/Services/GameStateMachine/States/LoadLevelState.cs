@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.CameraLogic;
+using CodeBase.Data;
+using CodeBase.Data.Loot;
+using CodeBase.Enemy;
 using CodeBase.Infrastructure;
 using CodeBase.Logic;
 using CodeBase.Services.Factory;
@@ -43,6 +48,7 @@ namespace CodeBase.Services.GameStateMachine.States {
 		public void Enter(Level level) {
 			_loadingCurtain.Show();
 			_gameFactory.Cleanup();
+			_gameFactory.WarmUp();
 			_sceneLoader.Load(level.ToString(), OnLoaded);
 		}
 
@@ -53,9 +59,9 @@ namespace CodeBase.Services.GameStateMachine.States {
 			? level
 			: throw new ArgumentException($"Level with name '{name}' not found");
 
-		private void OnLoaded() {
+		private async void OnLoaded() {
 			InitUI();
-			InitGameWorld();
+			await InitGameWorld();
 			LoadProgress();
 
 			_stateMachine.Enter<GameLoopState>();
@@ -70,12 +76,13 @@ namespace CodeBase.Services.GameStateMachine.States {
 			_uiFactory.CreateUIRoot();
 		}
 
-		private void InitGameWorld() {
+		private async Task InitGameWorld() {
 			var levelData = LevelStaticData();
 
 			InitSaveTriggers(levelData);
 			InitLevelTransferTrigger(levelData);
-			InitEnemySpawners(levelData);
+			await InitEnemySpawners(levelData);
+			await InitDroppedLoot();
 			var hero = InitHero(levelData);
 			_gameFactory.CreateHud(hero);
 			CameraFollow(hero);
@@ -89,9 +96,18 @@ namespace CodeBase.Services.GameStateMachine.States {
 		private void InitLevelTransferTrigger(LevelStaticData levelData) =>
 			_gameFactory.CreateLevelTransferTrigger(levelData.NextLevelTriggerTransform);
 
-		private void InitEnemySpawners(LevelStaticData levelData) {
+		private async Task InitEnemySpawners(LevelStaticData levelData) {
 			foreach (var spawnerData in levelData.EnemySpawners)
-				_gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
+				await _gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
+		}
+
+		private async Task InitDroppedLoot() {
+			foreach (var item in _progressService.Progress.WorldData.LootData.LootPiecesOnScene.Dictionary) {
+				var lootPiece = await _gameFactory.CreateLoot();
+				lootPiece.GetComponent<UniqueId>().Id = item.Key;
+				lootPiece.Initialize(item.Value.Loot);
+				lootPiece.transform.position = item.Value.Position.AsUnityVector();
+			}
 		}
 
 		private GameObject InitHero(LevelStaticData levelData) =>
