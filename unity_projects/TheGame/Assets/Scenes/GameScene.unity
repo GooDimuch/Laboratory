@@ -5260,6 +5260,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4345834349901335423, guid: fba865fe7e9ab48458c4a028f93a38c4, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+    - target: {fileID: 4345834349901335423, guid: fba865fe7e9ab48458c4a028f93a38c4, type: 3}
       propertyPath: m_Name
       value: SaveTrigger
       objectReference: {fileID: 0}

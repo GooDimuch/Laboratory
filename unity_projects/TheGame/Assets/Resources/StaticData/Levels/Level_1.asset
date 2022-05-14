@@ -38,3 +38,4 @@ MonoBehaviour:
   - Id: GameScene_da1ecbd4-8380-450b-9ebb-102d578162b6
     MonsterTypeId: 0
     Position: {x: 10.65, y: 0, z: 7.57}
+  InitialHeroTransform: {fileID: 0}

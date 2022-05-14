@@ -11,6 +11,9 @@ namespace CodeBase.Data {
 		public static Vector3 AsUnityVector(this Vector3Data vector3Data) =>
 			new Vector3(vector3Data.X, vector3Data.Y, vector3Data.Z);
 
+		public static TransformData AsTransformData(this Transform transform) =>
+			new TransformData(transform);
+
 		public static string ToJson<T>(this T obj) =>
 			JsonUtility.ToJson(obj);
 

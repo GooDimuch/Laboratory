@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Data;
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Logic;
@@ -8,7 +9,6 @@ using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.Randomizer;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
-using CodeBase.UI;
 using CodeBase.UI.Elements;
 using CodeBase.UI.Services.WindowService;
 using UnityEngine;
@@ -25,7 +25,7 @@ namespace CodeBase.Services.Factory {
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
-		private GameObject HeroGameObject { get; set; }
+		private Transform HeroTransform { get; set; }
 
 		public GameFactory(IAsset asset, IStaticDataService staticData, IRandomService randomizer,
 			IPersistentProgressService progressService, IWindowService windowService) {
@@ -45,9 +45,10 @@ namespace CodeBase.Services.Factory {
 			return hud;
 		}
 
-		public GameObject CreateHero(GameObject at) {
-			HeroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.transform.position, at.transform.rotation);
-			return HeroGameObject;
+		public GameObject CreateHero(TransformData at) {
+			var heroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.position, at.rotation);
+			HeroTransform = heroGameObject.transform;
+			return heroGameObject;
 		}
 
 		public SpawnPoint CreateSpawner(Vector3 at, string spawnerId, MonsterTypeId monsterTypeId) {
@@ -65,7 +66,7 @@ namespace CodeBase.Services.Factory {
 			health.Max = monsterData.Hp;
 
 			var attack = monster.GetComponent<Attack>();
-			attack.Construct(HeroGameObject.transform);
+			attack.Construct(HeroTransform);
 			attack.Damage = monsterData.Damage;
 			attack.Cleavage = monsterData.Cleavage;
 			attack.EffectiveDistance = monsterData.EffectiveDistance;
@@ -76,8 +77,8 @@ namespace CodeBase.Services.Factory {
 
 			monster.GetComponent<NavMeshAgent>().speed = monsterData.MoveSpeed;
 			monster.GetComponent<ActorUI>().Construct(health);
-			monster.GetComponent<AgentMoveToPlayer>().Constract(HeroGameObject.transform);
-			monster.GetComponent<RotateToHero>()?.Constract(HeroGameObject.transform);
+			monster.GetComponent<AgentMoveToPlayer>().Constract(HeroTransform);
+			monster.GetComponent<RotateToHero>()?.Constract(HeroTransform);
 
 			return monster;
 		}

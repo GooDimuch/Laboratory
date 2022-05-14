@@ -3,14 +3,13 @@ using CodeBase.Logic;
 using CodeBase.Services.Factory;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.StaticData;
+using CodeBase.StaticData;
 using CodeBase.UI.Services.UIFactory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace CodeBase.Infrastructure.States {
 	public class LoadLevelState : IPayloadedState<string> {
-		private const string INITIAL_POINT_TAG = "InitialPoint";
-		private const string ENEMY_SPAWNER_TAG = "EnemySpawner";
 		private readonly GameStateMachine _stateMachine;
 		private readonly SceneLoader _sceneLoader;
 		private readonly LoadingCurtain _loadingCurtain;
@@ -58,21 +57,24 @@ namespace CodeBase.Infrastructure.States {
 		}
 
 		private void InitGameWorld() {
-			InitEnemySpawners();
-			var hero = InitHero();
+			var levelData = LevelStaticData();
+
+			InitEnemySpawners(levelData);
+			var hero = InitHero(levelData);
 			_gameFactory.CreateHud(hero);
 			CameraFollow(hero);
 		}
 
-		private void InitEnemySpawners() {
-			var sceneKey = SceneManager.GetActiveScene().name;
-			var levelData = _staticDataService.ForLevel(sceneKey);
-			foreach (var spawnerData in levelData.EnemySpawners) {
+		private void InitEnemySpawners(LevelStaticData levelData) {
+			foreach (var spawnerData in levelData.EnemySpawners)
 				_gameFactory.CreateSpawner(spawnerData.Position, spawnerData.Id, spawnerData.MonsterTypeId);
-			}
 		}
 
-		private GameObject InitHero() => _gameFactory.CreateHero(GameObject.FindWithTag(INITIAL_POINT_TAG));
+		private GameObject InitHero(LevelStaticData levelData) =>
+			_gameFactory.CreateHero(levelData.InitialHeroTransform);
+
+		private LevelStaticData LevelStaticData() =>
+			_staticDataService.ForLevel(SceneManager.GetActiveScene().name);
 
 		private void CameraFollow(GameObject hero) =>
 			Camera.main.GetComponent<CameraFollow>().Follow(hero);
