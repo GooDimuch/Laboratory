@@ -1,5 +1,5 @@
 using System.Reflection;
-using CodeBase.Infrastructure.States;
+using CodeBase.Services.GameStateMachine;
 using UnityEditor;
 
 namespace CodeBase.Infrastructure.Editor {

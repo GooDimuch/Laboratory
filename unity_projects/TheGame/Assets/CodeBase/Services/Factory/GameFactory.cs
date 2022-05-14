@@ -1,12 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CodeBase.Data;
+using CodeBase.Data.Triggers;
 using CodeBase.Enemy;
 using CodeBase.Hero;
 using CodeBase.Logic;
 using CodeBase.Logic.EnemySpawners;
+using CodeBase.Logic.Triggers;
 using CodeBase.Services.AssetManagement;
+using CodeBase.Services.GameStateMachine;
+using CodeBase.Services.GameStateMachine.States;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.Randomizer;
+using CodeBase.Services.SaveLoadService;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
 using CodeBase.UI.Elements;
@@ -22,18 +28,20 @@ namespace CodeBase.Services.Factory {
 		private readonly IRandomService _randomizer;
 		private readonly IPersistentProgressService _progressService;
 		private readonly IWindowService _windowService;
+		private readonly IGameStateMachine _stateMachine;
 
 		public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
 		public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 		private Transform HeroTransform { get; set; }
 
 		public GameFactory(IAsset asset, IStaticDataService staticData, IRandomService randomizer,
-			IPersistentProgressService progressService, IWindowService windowService) {
+			IPersistentProgressService progressService, IWindowService windowService, IGameStateMachine stateMachine) {
 			_asset = asset;
 			_staticData = staticData;
 			_randomizer = randomizer;
 			_progressService = progressService;
 			_windowService = windowService;
+			_stateMachine = stateMachine;
 		}
 
 		public GameObject CreateHud(GameObject hero) {
@@ -46,7 +54,7 @@ namespace CodeBase.Services.Factory {
 		}
 
 		public GameObject CreateHero(TransformData at) {
-			var heroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.position, at.rotation);
+			var heroGameObject = InstantiateRegistered(AssetPath.HERO_PATH, at.position.AsUnityVector(), at.rotation);
 			HeroTransform = heroGameObject.transform;
 			return heroGameObject;
 		}
@@ -87,6 +95,23 @@ namespace CodeBase.Services.Factory {
 			var lootPiece = InstantiateRegistered(AssetPath.LOOT_PATH).GetComponent<LootPiece>();
 			lootPiece.Construct(_progressService.Progress.WorldData);
 			return lootPiece;
+		}
+
+		public void CreateSaveTrigger(TriggerData at, ISaveLoadService saveLoadService) {
+			var trigger = InstantiateRegistered(AssetPath.SAVE_TRIGGER_PATH, at.transform.position.AsUnityVector(),
+				at.transform.rotation).GetComponent<SaveTrigger>();
+			var collider = trigger.GetComponent<BoxCollider>();
+			collider.size = at.size.AsUnityVector();
+			trigger.Construct(saveLoadService);
+		}
+
+		public void CreateLevelTransferTrigger(LevelTransferTriggerData at) {
+			var trigger =
+				InstantiateRegistered(AssetPath.LEVEL_TRANSFER_TRIGGER_PATH, at.transform.position.AsUnityVector(),
+					at.transform.rotation).GetComponent<LevelTransferTrigger>();
+			var collider = trigger.GetComponent<BoxCollider>();
+			collider.size = at.size.AsUnityVector();
+			trigger.Construct(_stateMachine, LoadLevelState.GetLevelByName(at.TransferTo));
 		}
 
 		private GameObject InstantiateRegistered(string prefabPath) =>

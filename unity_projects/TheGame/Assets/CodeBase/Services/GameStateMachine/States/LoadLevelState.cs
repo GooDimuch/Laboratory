@@ -1,15 +1,23 @@
-﻿using CodeBase.CameraLogic;
+﻿using System;
+using CodeBase.CameraLogic;
+using CodeBase.Infrastructure;
 using CodeBase.Logic;
 using CodeBase.Services.Factory;
 using CodeBase.Services.PersistentProgress;
+using CodeBase.Services.SaveLoadService;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
 using CodeBase.UI.Services.UIFactory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace CodeBase.Infrastructure.States {
-	public class LoadLevelState : IPayloadedState<string> {
+namespace CodeBase.Services.GameStateMachine.States {
+	public class LoadLevelState : IPayloadedState<LoadLevelState.Level> {
+		public enum Level {
+			Level_1,
+			Level_2,
+		}
+
 		private readonly GameStateMachine _stateMachine;
 		private readonly SceneLoader _sceneLoader;
 		private readonly LoadingCurtain _loadingCurtain;
@@ -17,10 +25,11 @@ namespace CodeBase.Infrastructure.States {
 		private readonly IPersistentProgressService _progressService;
 		private readonly IStaticDataService _staticDataService;
 		private readonly IUIFactory _uiFactory;
+		private readonly ISaveLoadService _saveLoadService;
 
 		public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
 			IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService,
-			IUIFactory uiFactory) {
+			IUIFactory uiFactory, ISaveLoadService saveLoadService) {
 			_stateMachine = gameStateMachine;
 			_sceneLoader = sceneLoader;
 			_loadingCurtain = loadingCurtain;
@@ -28,16 +37,21 @@ namespace CodeBase.Infrastructure.States {
 			_progressService = progressService;
 			_staticDataService = staticDataService;
 			_uiFactory = uiFactory;
+			_saveLoadService = saveLoadService;
 		}
 
-		public void Enter(string sceneName) {
+		public void Enter(Level level) {
 			_loadingCurtain.Show();
 			_gameFactory.Cleanup();
-			_sceneLoader.Load(sceneName, OnLoaded);
+			_sceneLoader.Load(level.ToString(), OnLoaded);
 		}
 
 		public void Exit() =>
 			_loadingCurtain.Hide();
+
+		public static Level GetLevelByName(string name) => Enum.TryParse(name, out Level level)
+			? level
+			: throw new ArgumentException($"Level with name '{name}' not found");
 
 		private void OnLoaded() {
 			InitUI();
@@ -59,11 +73,21 @@ namespace CodeBase.Infrastructure.States {
 		private void InitGameWorld() {
 			var levelData = LevelStaticData();
 
+			InitSaveTriggers(levelData);
+			InitLevelTransferTrigger(levelData);
 			InitEnemySpawners(levelData);
 			var hero = InitHero(levelData);
 			_gameFactory.CreateHud(hero);
 			CameraFollow(hero);
 		}
+
+		private void InitSaveTriggers(LevelStaticData levelData) {
+			foreach (var triggerTransform in levelData.SaveTriggerTransforms)
+				_gameFactory.CreateSaveTrigger(triggerTransform, _saveLoadService);
+		}
+
+		private void InitLevelTransferTrigger(LevelStaticData levelData) =>
+			_gameFactory.CreateLevelTransferTrigger(levelData.NextLevelTriggerTransform);
 
 		private void InitEnemySpawners(LevelStaticData levelData) {
 			foreach (var spawnerData in levelData.EnemySpawners)

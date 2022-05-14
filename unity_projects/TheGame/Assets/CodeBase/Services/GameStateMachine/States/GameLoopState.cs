@@ -1,4 +1,4 @@
-﻿namespace CodeBase.Infrastructure.States {
+﻿namespace CodeBase.Services.GameStateMachine.States {
 	public class GameLoopState : IState {
 		public GameLoopState(GameStateMachine stateMachine) { }
 

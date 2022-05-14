@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0aeded7dd811e804eb636fa398d0457a, type: 3}
-  m_Name: Level_1
+  m_Name: Level_2
   m_EditorClassIdentifier: 
-  LevelKey: Level_1
+  LevelKey: Level_2
   InitialHeroTransform:
     position:
-      X: 0
-      Y: 2
-      Z: 20
+      X: 12.26
+      Y: 0
+      Z: -4.43
     _rotation:
       X: -0
-      Y: 180
+      Y: 0
       Z: 0
     scale:
       X: 1
@@ -29,9 +29,9 @@ MonoBehaviour:
   NextLevelTriggerTransform:
     transform:
       position:
-        X: 0
-        Y: 2
-        Z: 25
+        X: 0.6
+        Y: 1
+        Z: 12
       _rotation:
         X: -0
         Y: 0
@@ -44,17 +44,17 @@ MonoBehaviour:
       X: 3
       Y: 2
       Z: 1
-    TransferTo: Level_2
+    TransferTo: Level_1
   SaveTriggerTransforms:
   - transform:
       position:
-        X: 0
+        X: 6
         Y: 1
-        Z: 10
+        Z: -15.06
       _rotation:
         X: -0
-        Y: 0
-        Z: 0
+        Y: 90
+        Z: -0
       scale:
         X: 1
         Y: 1
@@ -65,9 +65,9 @@ MonoBehaviour:
       Z: 1
   - transform:
       position:
-        X: -8
+        X: -2.3
         Y: 1
-        Z: -6.95
+        Z: -3.6
       _rotation:
         X: -0
         Y: 90
@@ -81,27 +81,27 @@ MonoBehaviour:
       Y: 2
       Z: 1
   EnemySpawners:
-  - Id: GameScene_10b8d80b-06c9-46a4-ab02-97e559c01502
-    MonsterTypeId: 0
-    Position: {x: 11.22, y: 0, z: -2.35}
-  - Id: GameScene_33aa8ab3-cda8-4352-8dff-6df0ff6b8cab
-    MonsterTypeId: 0
-    Position: {x: -6.12, y: 0, z: -5.17}
-  - Id: GameScene_bb75e98f-66be-47c0-b7a9-01417d6a01a3
-    MonsterTypeId: 10
-    Position: {x: -6.72, y: 0.000071154536, z: 12.74}
-  - Id: GameScene_fa573932-1fc1-4961-a9bf-ab82d7787cbf
-    MonsterTypeId: 0
-    Position: {x: -15.58, y: 0.72717226, z: -7.26}
-  - Id: GameScene_fe51669c-d115-480d-9497-69fe8565a4fa
-    MonsterTypeId: 0
-    Position: {x: 2.43, y: 0, z: 12.39}
-  - Id: SpawnMarker_6376f5d6-7d92-4e8d-ae06-53b3fc5dba9c
-    MonsterTypeId: 10
-    Position: {x: 0.33, y: 0, z: 2.63}
-  - Id: GameScene_9b1cf314-64e7-4438-8d24-b37ca9aba760
-    MonsterTypeId: 0
-    Position: {x: -20.06, y: 2.067089, z: 1.73}
   - Id: GameScene_da1ecbd4-8380-450b-9ebb-102d578162b6
     MonsterTypeId: 0
-    Position: {x: 10.65, y: 0, z: 7.57}
+    Position: {x: -6.1, y: 0, z: -9.9}
+  - Id: GameScene_9b1cf314-64e7-4438-8d24-b37ca9aba760
+    MonsterTypeId: 0
+    Position: {x: 3.4, y: 0, z: 3.4}
+  - Id: SpawnMarker_6376f5d6-7d92-4e8d-ae06-53b3fc5dba9c
+    MonsterTypeId: 10
+    Position: {x: 0.3, y: 0, z: 8.5}
+  - Id: GameScene_fe51669c-d115-480d-9497-69fe8565a4fa
+    MonsterTypeId: 0
+    Position: {x: 11.8, y: 0.109062634, z: -13.9}
+  - Id: GameScene_fa573932-1fc1-4961-a9bf-ab82d7787cbf
+    MonsterTypeId: 0
+    Position: {x: 7.8, y: 0, z: -1.7}
+  - Id: GameScene_bb75e98f-66be-47c0-b7a9-01417d6a01a3
+    MonsterTypeId: 10
+    Position: {x: -15.8, y: 0.79301643, z: -5.96}
+  - Id: GameScene_33aa8ab3-cda8-4352-8dff-6df0ff6b8cab
+    MonsterTypeId: 0
+    Position: {x: -5, y: 0, z: 4.2}
+  - Id: GameScene_10b8d80b-06c9-46a4-ab02-97e559c01502
+    MonsterTypeId: 0
+    Position: {x: -1.1, y: 0, z: 0.6}

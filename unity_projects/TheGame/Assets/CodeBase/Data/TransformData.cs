@@ -4,16 +4,16 @@ using UnityEngine;
 namespace CodeBase.Data {
 	[Serializable]
 	public class TransformData {
-		public Vector3 position;
-		[SerializeField] private Vector3 _rotation;
-		public Vector3 scale;
+		public Vector3Data position;
+		[SerializeField] private Vector3Data _rotation;
+		public Vector3Data scale;
 
-		public Quaternion rotation => Quaternion.Euler(_rotation);
+		public Quaternion rotation => Quaternion.Euler(_rotation.AsUnityVector());
 
 		public TransformData(Transform transform) {
-			position = transform.position;
-			_rotation = transform.rotation.eulerAngles;
-			scale = transform.localScale;
+			position = transform.position.AsVectorData();
+			_rotation = transform.rotation.eulerAngles.AsVectorData();
+			scale = transform.localScale.AsVectorData();
 		}
 	}
 }

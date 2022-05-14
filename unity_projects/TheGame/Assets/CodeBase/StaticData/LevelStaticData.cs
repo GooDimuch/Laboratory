@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Data;
+using CodeBase.Data.Triggers;
 using UnityEngine;
 
 namespace CodeBase.StaticData {
@@ -7,6 +8,8 @@ namespace CodeBase.StaticData {
 	public class LevelStaticData : ScriptableObject {
 		public string LevelKey;
 		public TransformData InitialHeroTransform;
+		public LevelTransferTriggerData NextLevelTriggerTransform;
+		public List<TriggerData> SaveTriggerTransforms;
 		public List<EnemySpawnerStaticData> EnemySpawners;
 	}
 }

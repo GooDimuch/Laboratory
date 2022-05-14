@@ -1,4 +1,4 @@
-﻿using CodeBase.Services;
+﻿using CodeBase.Infrastructure;
 using CodeBase.Services.Ads;
 using CodeBase.Services.AssetManagement;
 using CodeBase.Services.Factory;
@@ -11,7 +11,7 @@ using CodeBase.UI.Services.UIFactory;
 using CodeBase.UI.Services.WindowService;
 using UnityEngine;
 
-namespace CodeBase.Infrastructure.States {
+namespace CodeBase.Services.GameStateMachine.States {
 	public class BootstrapState : IState {
 		private const string INITIAL = "BootScene";
 		private readonly GameStateMachine _stateMachine;
@@ -38,6 +38,7 @@ namespace CodeBase.Infrastructure.States {
 		private void RegisterServices() {
 			RegisterStaticData();
 			RegisterAdsService();
+			_services.RegisterSingle<IGameStateMachine>(_stateMachine);
 			_services.RegisterSingle<IInputService>(InputService());
 			_services.RegisterSingle<IAsset>(new Asset());
 			_services.RegisterSingle<IRandomService>(new RandomService());
@@ -52,6 +53,12 @@ namespace CodeBase.Infrastructure.States {
 			IStaticDataService staticData = new StaticDataService();
 			staticData.LoadMonsters();
 			_services.RegisterSingle(staticData);
+		}
+
+		private void RegisterAdsService() {
+			var adsService = new AdsService();
+			adsService.Initialize();
+			_services.RegisterSingle<IAdsService>(adsService);
 		}
 
 		private static IInputService InputService() {
@@ -74,17 +81,12 @@ namespace CodeBase.Infrastructure.States {
 				_services.Single<IStaticDataService>(),
 				_services.Single<IRandomService>(),
 				_services.Single<IPersistentProgressService>(),
-				_services.Single<IWindowService>()));
+				_services.Single<IWindowService>(),
+				_services.Single<IGameStateMachine>()));
 
 		private void RegisterSaveLoadService() =>
-			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService(
+			_services.RegisterSingle<ISaveLoadService>(new SaveLoadService.SaveLoadService(
 				_services.Single<IPersistentProgressService>(),
 				_services.Single<IGameFactory>()));
-
-		private void RegisterAdsService() {
-			var adsService = new AdsService();
-			adsService.Initialize();
-			_services.RegisterSingle<IAdsService>(adsService);
-		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CodeBase.Data {
+namespace CodeBase.Data.Loot {
 	[Serializable]
 	public class LootPieceData {
 		public Vector3Data Position;

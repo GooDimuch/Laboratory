@@ -1,6 +1,6 @@
-using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using CodeBase.Services;
+using CodeBase.Services.GameStateMachine;
 
 namespace CodeBase.Infrastructure {
 	public class Game {

@@ -2,10 +2,8 @@
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoadService;
 
-namespace CodeBase.Infrastructure.States {
+namespace CodeBase.Services.GameStateMachine.States {
 	public class LoadProgressState : IState {
-		private const string GAME_SCENE = "GameScene";
-
 		private readonly GameStateMachine _gameStateMachine;
 		private readonly IPersistentProgressService _progressService;
 		private readonly ISaveLoadService _saveLoadService;
@@ -19,7 +17,8 @@ namespace CodeBase.Infrastructure.States {
 
 		public void Enter() {
 			LoadProgressOrNew();
-			_gameStateMachine.Enter<LoadLevelState, string>(_progressService.Progress.WorldData.PositionOnLevel.Level);
+			_gameStateMachine.Enter<LoadLevelState, LoadLevelState.Level>(
+				LoadLevelState.GetLevelByName(_progressService.Progress.WorldData.PositionOnLevel.Level));
 		}
 
 		public void Exit() { }
@@ -29,14 +28,14 @@ namespace CodeBase.Infrastructure.States {
 		}
 
 		private PlayerProgress CreateNewProgress() {
-			var progress = new PlayerProgress(GAME_SCENE);
-			
+			var progress = new PlayerProgress(LoadLevelState.Level.Level_1.ToString());
+
 			progress.HeroState.maxHp = 100;
 			progress.HeroState.ResetHp();
 
 			progress.HeroStats.Damage = 50;
 			progress.HeroStats.DamageRadius = 2;
-			
+
 			return progress;
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using CodeBase.Data;
+using CodeBase.Data.Loot;
 using CodeBase.Logic;
 using CodeBase.Services.PersistentProgress;
 using TMPro;
