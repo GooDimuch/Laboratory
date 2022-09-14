@@ -1,8 +1,20 @@
+# pip install translitua
+# pip install OSMPythonTools
+
+def import_or_install(package):
+	try:
+		return __import__(package)
+	except ImportError:
+		pip.main(['install', package])
+
+import pip
 import sys, os
 import ssl
 import csv, sqlite3
-import translitua as tr
 from pathlib import Path
+translitua = import_or_install('translitua')
+OSMPythonTools = import_or_install('OSMPythonTools')
+import translitua as tr
 from OSMPythonTools.nominatim import Nominatim
 from OSMPythonTools.overpass import overpassQueryBuilder, Overpass
 
@@ -57,7 +69,7 @@ def cities_counter_to_string(cities_counter):
 	result = ', '.join([f'{key}[{value}]' for key, value in cities_counter.items()])
 	return f'{sum(cities_counter.values())} ({result})'
 
-def append_cities_by_district(cities, overpass, district_osm, region_name, district_name):
+def append_cities_by_district(cities, overpass, district_osm, region_name, district_name, localization = 'en'):
 	city_keys = {'city': 0, 'town': 0, 'village': 0, 'hamlet': 0, 'neighbourhood': 0}
 	for city_key in city_keys.keys():
 		query = overpassQueryBuilder(area=district_osm.areaId(), elementType='node', selector=[f'"place"="{city_key}"'], out='body')
@@ -65,8 +77,8 @@ def append_cities_by_district(cities, overpass, district_osm, region_name, distr
 		# print(result.toJSON())
 
 		for city_osm in result.elements():
-			city_name = city_osm.tag('name:en') if (city_osm.tag('name:en')) else city_osm.tag('name')
-			city_old_name = city_osm.tag('old_name:en') if (city_osm.tag('old_name:en')) else city_osm.tag('old_name')
+			city_name = city_osm.tag(f'name:{localization}') if (city_osm.tag(f'name:{localization}')) else city_osm.tag('name')
+			city_old_name = city_osm.tag(f'old_name:{localization}') if (city_osm.tag(f'old_name:{localization}')) else city_osm.tag('old_name')
 			# print(f'\t\t{city_name}')
 			city = City(city_osm.id(), city_key, city_name, city_old_name, district_name, region_name, city_osm.lon(), city_osm.lat())
 			if (city.get_key() in cities):
@@ -82,7 +94,7 @@ def append_cities_by_district(cities, overpass, district_osm, region_name, distr
 		# if (city_keys[city_key] > 0): print(f'{city_keys[city_key]} {city_key} added')
 	return city_keys
 
-def append_cities_by_region(cities, overpass, region_osm, region_name):
+def append_cities_by_region(cities, overpass, region_osm, region_name, localization = 'en'):
 	if (PRINT_ALL or PRINT_REGIONS): print(f'{region_name}')
 	cities_counter = None
 
@@ -93,16 +105,16 @@ def append_cities_by_region(cities, overpass, region_osm, region_name):
 	districts = result.elements()
 	if (len(districts) > 0):
 		for district_osm in result.elements():
-			district_name = district_osm.tag('name:en') if (district_osm.tag('name:en')) else district_osm.tag('name')
+			district_name = district_osm.tag(f'name:{localization}') if (district_osm.tag(f'name:{localization}')) else district_osm.tag('name')
 			if (PRINT_ALL or PRINT_DISTRICTS): print(f'\t{district_name}')
-			city_keys = append_cities_by_district(cities, overpass, district_osm, region_name, district_name)
+			city_keys = append_cities_by_district(cities, overpass, district_osm, region_name, district_name, localization)
 			if (cities_counter): sum_city_keys(cities_counter, city_keys)
 			else: cities_counter = city_keys
 	else:
-		cities_counter = append_cities_by_district(cities, overpass, region_osm, region_name, '')
+		cities_counter = append_cities_by_district(cities, overpass, region_osm, region_name, '', localization)
 	return cities_counter
 
-def append_cities_by_contry(cities, nominatim, overpass, contry, skip_regions = {}):
+def append_cities_by_contry(cities, nominatim, overpass, contry, skip_regions = {}, localization = 'en'):
 	cities_counter = None
 
 	areaId = nominatim.query(contry).areaId()
@@ -111,17 +123,17 @@ def append_cities_by_contry(cities, nominatim, overpass, contry, skip_regions = 
 	# print(result.toJSON())
 
 	for region_osm in result.elements():
-		region_name = region_osm.tag('name:en') if (region_osm.tag('name:en')) else region_osm.tag('name')
+		region_name = region_osm.tag(f'name:{localization}') if (region_osm.tag(f'name:{localization}')) else region_osm.tag('name')
 		if (region_name in skip_regions): continue
 		if (region_osm.id() in skip_regions): continue
-		city_keys = append_cities_by_region(cities, overpass, region_osm, region_name)
+		city_keys = append_cities_by_region(cities, overpass, region_osm, region_name, localization)
 		if (cities_counter): sum_city_keys(cities_counter, city_keys)
 		else: cities_counter = city_keys
 
 	return cities_counter
 
 def append_ukrainian_cities(cities, nominatim, overpass):
-	return append_cities_by_contry(cities, nominatim, overpass, 'Ukraine', {3788485, 3795586})
+	return append_cities_by_contry(cities, nominatim, overpass, 'Ukraine', {3788485, 3795586}, 'uk')
 
 def append_cities_by_regions(cities, nominatim, overpass, regions):
 	cities_counter = None
@@ -195,7 +207,10 @@ def override(cities):
 						city.override(row['name'], row['old_name'], row['district'], row['region'], row['x'], row['y'])
 					else:
 						cities.pop(city.get_key(), None)
-					override_city_counter += 1
+				else:
+					city = City(row['id'], row['key'] or "city", row['name'], row['old_name'], row['district'], row['region'], row['x'], row['y'])
+					cities[city.get_key()] = city
+				override_city_counter += 1
 			print(f'Override {override_city_counter} cities')
 
 def translit(cities):
@@ -242,7 +257,7 @@ def create_db(csv_file_path, db_file_path):
 def main() -> int:
 	cities = get_cities()
 	override(cities)
-	translit(cities)
+	# translit(cities)
 	write(cities, CITIES_CSV_PATH)
 	create_db(CITIES_CSV_PATH, CITIES_DB_PATH)
 
