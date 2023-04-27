@@ -1,15 +1,13 @@
 namespace UniTests;
 
-public struct Vector3Int
+public struct Vector2Int
 {
     public int x;
     public int y;
-    public int z;
 
-    public Vector3Int(int x, int y, int z = 0)
+    public Vector2Int(int x, int y)
     {
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 }

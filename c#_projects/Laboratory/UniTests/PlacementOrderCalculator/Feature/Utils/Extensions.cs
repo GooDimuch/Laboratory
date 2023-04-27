@@ -42,3 +42,10 @@ public static class CollectionExtension
         bool sortKeys = false) =>
         string.Join(separator, sortKeys ? collection.OrderBy(pair => pair.Key).Select(to) : collection.Select(to));
 }
+
+public static class PlacementViewExtension
+{
+    public static bool IsAboveAndRightOf(this PlacementView other, PlacementView current) =>
+        other.Area.allPositionsWithin.Any(cell =>
+            cell.x >= current.Area.Position.x && cell.y >= current.Area.Position.y);
+}

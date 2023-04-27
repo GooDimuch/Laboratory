@@ -6,8 +6,3 @@ public class PlacementView
     public Vector3Int Position => Area.Position;
     public PlacementData Data;
 }
-
-public class PlacementData
-{
-    public long Id;
-}
