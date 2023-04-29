@@ -19,7 +19,8 @@ public class PlacementOrderCalculatorTests
 
     [Test]
     [TestCase(RoomSetuper.Variant._2x3_v1, "1:0,2:1")]
-    // [TestCase(RoomSetuper.Variant._5x9_v1, "1:3,2:0,3:1,4:2,5:3,6:4,7:5,8:6")]
+    [TestCase(RoomSetuper.Variant._4x3_v2, "1:0,2:1,3:2,4:3")]
+    [TestCase(RoomSetuper.Variant._5x9_v1, "1:3,2:0,3:1,4:2,5:3,6:4,7:5,8:6")]
     public void Test(RoomSetuper.Variant variant, string expected) =>
         Assert.That(GetCalculatedWeight(variant).ToString(",", p => $"{p.Key}:{p.Value}", true), Is.EqualTo(expected));
 
@@ -64,7 +65,8 @@ public class PlacementOrderCalculatorTests
         var roomData = _roomSetuper.Get(variant);
         var roomSize = roomData.size;
         var placements = roomData.placements.ToList();
-        _orderSetter.ApplyOrders(roomSize, placements, (p, w) => p.Area.Position.z = w);
+        _orderSetter.ApplyOrders(roomSize, placements,
+            (p, w) => p.Area.Position = new Vector3Int(p.Area.Position.x, p.Area.Position.y, w));
         return placements;
     }
 

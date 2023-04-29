@@ -41,11 +41,81 @@ public static class CollectionExtension
         Func<KeyValuePair<K, V>, string> to,
         bool sortKeys = false) =>
         string.Join(separator, sortKeys ? collection.OrderBy(pair => pair.Key).Select(to) : collection.Select(to));
+
+    public static Vector2Int GetSize(this IEnumerable<Vector3Int> points)
+    {
+        var maxX = 0;
+        var maxY = 0;
+
+        foreach (var point in points)
+        {
+            if (point.x > maxX)
+                maxX = point.x;
+            if (point.y > maxY)
+                maxY = point.y;
+        }
+
+        return new Vector2Int(maxX, maxY) + Vector2Int.one;
+    }
 }
 
 public static class PlacementViewExtension
 {
-    public static bool IsAboveAndRightOf(this PlacementView other, PlacementView current) =>
-        other.Area.allPositionsWithin.Any(cell =>
-            cell.x >= current.Area.Position.x && cell.y >= current.Area.Position.y);
+    public static bool IsAboveAndRightOf(this PlacementView other, PlacementView current)
+    {
+        return IsDefaultCondition()
+            ? OtherRightTopAboveAndRightOfCurrentLeftBottom()
+            : OtherRightTopAboveAndRightOfCurrentRightTop();
+
+        bool IsDefaultCondition() =>
+            IsConvex(current) || !OtherLeftBottomBelowAndLeftOfCurrentLeftBottom();
+
+        bool IsConvex(PlacementView placement) =>
+            placement.Area.Area.Cast<int>().All(i => i == 1);
+
+        bool OtherRightTopAboveAndRightOfCurrentLeftBottom() =>
+            other.Area.Position.x + other.Area.size.x - 1 >= current.Area.Position.x &&
+            other.Area.Position.y + other.Area.size.y - 1 >= current.Area.Position.y;
+
+        bool OtherLeftBottomBelowAndLeftOfCurrentLeftBottom() =>
+            other.Area.Position.x + other.Area.size.x - 1 <= current.Area.Position.x &&
+            other.Area.Position.y + other.Area.size.y - 1 <= current.Area.Position.y;
+
+        bool OtherRightTopAboveAndRightOfCurrentRightTop() =>
+            other.Area.Position.x + other.Area.size.x - 1 >= current.Area.Position.x + current.Area.size.x - 1 &&
+            other.Area.Position.y + other.Area.size.y - 1 >= current.Area.Position.y + current.Area.size.y - 1;
+    }
+}
+
+public static class AreaExtension
+{
+    //todo need to optimize matrix rotation
+    public static int[,] Rotate(this int[,] areaRotate0, OrientationType orientation) =>
+        orientation switch
+        {
+            OrientationType.Rotate0 => (int[,])areaRotate0.Clone(),
+            OrientationType.Rotate90 => RotateMatrixCounterClockwise(
+                RotateMatrixCounterClockwise(RotateMatrixCounterClockwise(areaRotate0))),
+            OrientationType.Rotate180 =>
+                RotateMatrixCounterClockwise(RotateMatrixCounterClockwise(areaRotate0)),
+            OrientationType.Rotate270 => RotateMatrixCounterClockwise(areaRotate0),
+            _ => throw new ArgumentOutOfRangeException(nameof(orientation), orientation, null)
+        };
+
+    public static int[,] RotateMatrixCounterClockwise(int[,] oldMatrix)
+    {
+        int[,] newMatrix = new int[oldMatrix.GetLength(1), oldMatrix.GetLength(0)];
+        int newColumn, newRow = 0;
+        for (int oldColumn = oldMatrix.GetLength(1) - 1; oldColumn >= 0; oldColumn--)
+        {
+            newColumn = 0;
+            for (int oldRow = 0; oldRow < oldMatrix.GetLength(0); oldRow++)
+            {
+                newMatrix[newRow, newColumn] = oldMatrix[oldRow, oldColumn];
+                newColumn++;
+            }
+            newRow++;
+        }
+        return newMatrix;
+    }
 }
