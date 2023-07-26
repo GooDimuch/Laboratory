@@ -13,6 +13,23 @@ public class ScrollWithPin : MonoBehaviour
 
     private void Start()
     {
+        Init();
+    }
+
+    public void SetPinned(ScrollWithPinBehaviour behaviour)
+    {
+        PinnedBehaviour = behaviour;
+        TopBehaviour.Show(behaviour);
+        BottomBehaviour.Show(behaviour);
+        UpdatePinned();
+    }
+
+    public void ActivateBottomWithForce() => PinOnBottom();
+
+    public void ActivateTopWithForce() => PinOnTop();
+
+    protected virtual void Init()
+    {
         Scroll.onValueChanged.AddListener(OnScroll);
         HidePinned();
         if (PinnedBehaviour != null)
@@ -23,17 +40,6 @@ public class ScrollWithPin : MonoBehaviour
 
         UpdatePinned();
     }
-
-    public void SetPinned(ScrollWithPinBehaviour behaviour)
-    {
-        PinnedBehaviour = behaviour;
-        TopBehaviour.Show(behaviour);
-        BottomBehaviour.Show(behaviour);
-        UpdatePinned();
-    }
-    
-    public void ActivateBottomWithForce() => PinOnBottom();
-    public void ActivateTopWithForce() => PinOnTop();
 
     protected virtual void PinOnTop()
     {
