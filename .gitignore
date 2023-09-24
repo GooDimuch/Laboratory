@@ -5,7 +5,8 @@ unity_courses/
 #
 /[Ll]ibrary/
 /[Tt]emp/
-/[Oo]bj/
+[Bb]in/
+[Oo]bj/
 /[Bb]uild/
 /[Bb]uilds/
 /[Ll]ogs/
